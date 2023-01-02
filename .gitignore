@@ -1,10 +1,10 @@
 .env
 schema.sql
-node_modules
 .vscode
+node_modules
 
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,vim,webstorm,macos,linux,windows,zsh,node,dotenv
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,vim,webstorm,macos,linux,windows,zsh,node,dotenv
+# Created by https://www.toptal.com/developers/gitignore/api/vim,macos,node,linux,visualstudiocode,dotenv,webstorm,windows,zsh
+# Edit at https://www.toptal.com/developers/gitignore?templates=vim,macos,node,linux,visualstudiocode,dotenv,webstorm,windows,zsh
 
 ### dotenv ###
 .env
@@ -404,4 +404,4 @@ zsdoc/data
 /tests/_output/*
 !/tests/_output/.gitkeep
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,vim,webstorm,macos,linux,windows,zsh,node,dotenv
+# End of https://www.toptal.com/developers/gitignore/api/vim,macos,node,linux,visualstudiocode,dotenv,webstorm,windows,zsh
