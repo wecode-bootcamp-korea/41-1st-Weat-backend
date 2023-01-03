@@ -53,19 +53,21 @@ const read = async (userId) => {
 };
 
 // 3. 장바구니 상품 수정 (주문수량 증가/감소)
-const update = async (count, cartId, userId) => {
+// DB 생성 후 아래 쿼리문 수정할 것.
+const update = async (count, itemId, userId) => {
   try {
-    // 게시글 수정
+    // 장바구니 수량 수정
     await myDataSource.query(
       `UPDATE posts
         SET
         content = ?
-              WHERE userId = ? AND id = ?
+        WHERE userId = ? AND id = ?
           `,
-      [content, userId, postId]
+      [count, itemId, userId]
     );
 
-    // 수정된 게시글 내용 리턴
+    // 만약 프론트에 수정된 정보를 리턴하지 않는다면 아래 블록 삭제
+    // 수정된 장바구니 수량 리턴
     return await myDataSource.query(
       `SELECT
           posts.userId AS userId,
@@ -76,7 +78,7 @@ const update = async (count, cartId, userId) => {
         FROM posts
         INNER JOIN users ON users.id = posts.userId
         WHERE posts.id = ?`,
-      [postId]
+      [itemId]
     );
   } catch (err) {
     console.log(err);
