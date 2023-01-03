@@ -4,7 +4,7 @@ const cartDao = require("../models/cartDao");
 
 // 1. 장바구니에 상품 추가
 // await cartService.create(itemId, thick, count);
-const create = async (itemId, thick, count) => {
+const createCart = async (itemId, thick, count) => {
   // 1-1. DB로부터 재고 무게를 가져옴
   const stock = await cartDao.getStock(itemId);
   // 1-2. 장바구니에 담을 고기 무게보다 재고가 부족하면 품절 에러 반환
@@ -16,16 +16,16 @@ const create = async (itemId, thick, count) => {
   }
   // 1-3. thick * count 즉 장바구니에 담을 고기 무게보다 재고 수가 크거나 같으면
   // 1-4. 장바구니에 고기를 담는다.
-  return await cartDao.create(itemId, thick, count);
+  return await cartDao.createCart(itemId, thick, count);
 };
 
 // 2. 장바구니 조회
-const read = async (userId) => {
-  return await cartDao.read(userId);
+const readCart = async (userId) => {
+  return await cartDao.readCart(userId);
 };
 
 // 3. 장바구니 상품 수정 (주문수량 증가/감소)
-const update = async (count, itemId, userId) => {
+const updateCart = async (count, itemId, userId) => {
   // 3-1. DB로부터 상품 재고 수량을 가져옴
   const stock = await cartDao.getStock(itemId);
   // 3-2. 재고 수량보다 장바구니 수량이 많으면 품절 에러 반환
@@ -37,17 +37,17 @@ const update = async (count, itemId, userId) => {
   }
   // 3-3. 장바구니 수량보다 재고 수가 많거나 같으면
   // 3-4. 장바구니에 고기를 담는다.
-  return await cartDao.update(count, itemId, userId);
+  return await cartDao.updateCart(count, itemId, userId);
 };
 
-// // 7. 게시글 삭제
-// const deletePost = async (postId) => {
-//   await postDao.deletePost(postId);
-// };
+// 4. 장바구니 아이템 삭제
+const deleteCart = async (itemId) => {
+  await cartDao.deleteCart(itemId);
+};
 
 module.exports = {
-  create,
-  read,
-  update,
-  // delete,
+  createCart,
+  readCart,
+  updateCart,
+  deleteCart,
 };
