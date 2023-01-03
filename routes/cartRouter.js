@@ -13,7 +13,7 @@ router.post("/create", validateToken, cartController.create);
 router.get("/read", validateToken, cartController.read);
 
 // 3. 장바구니 상품 수정
-// router.put("/update", validateToken, cartController.update);
+router.put("/update", validateToken, cartController.update);
 
 // 4. 장바구니 상품 삭제
 // router.delete("/delete", validateToken, cartController.delete);

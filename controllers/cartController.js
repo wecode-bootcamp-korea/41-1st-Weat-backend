@@ -52,6 +52,8 @@ const read = async (req, res) => {
   }
 };
 
+// 3. 장바구니 상품 업데이트
+
 // // 4. 전체 게시글 조회
 // const showAllPost = async (req, res) => {
 //   try {
