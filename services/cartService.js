@@ -20,19 +20,14 @@ const create = async (itemId, thick, count) => {
 };
 
 // 2. 장바구니 조회
-const read = async () => {
-  return await cartDao.read();
+const read = async (userId) => {
+  return await cartDao.read(userId);
 };
 
-// // 5. 유저 게시글 조회
-// const showUserPost = async (userId) => {
-//   return await postDao.showUserPost(userId);
-// };
-
-// // 6. 게시글 수정
-// const modifyUserPost = async (content, userId, postId) => {
-//   return await postDao.modifyUserPost(content, userId, postId);
-// };
+// 3. 장바구니 상품 수정 (주문수량 증가/감소)
+const update = async (count, cartId, userId) => {
+  return await cartDao.update(count, cartId, userId);
+};
 
 // // 7. 게시글 삭제
 // const deletePost = async (postId) => {
@@ -42,7 +37,6 @@ const read = async () => {
 module.exports = {
   create,
   read,
-  // update,
+  update,
   // delete,
-  getStock,
 };

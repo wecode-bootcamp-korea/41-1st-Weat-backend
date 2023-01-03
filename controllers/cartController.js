@@ -52,7 +52,37 @@ const read = async (req, res) => {
   }
 };
 
-// 3. 장바구니 상품 업데이트
+// 3. 장바구니 상품 수정 (주문수량 증가/감소)
+// request 파라미터로 장바구니 row 의 id (cartId) 전달받아 DB 업데이트
+// request body 의 count key (프론트에서 +버튼 / -버튼으로 구현됨) 를 이용해 주문수량 증가/감소
+// API 문서 작성 시 프론트에서 {"count" : 1/-1} 형태로 request 날려달라고 하기.
+// ex) count === 1 : 주문수량 1 증가, count === -1 : 주문수량 1 감소
+const update = async (req, res) => {
+  try {
+    const { count } = req.body;
+    // 만약 프론트에서 cartId 를 body 에 담아서 전달할 경우
+    // const { cartId, count } = req.body;
+    // 하지만 보통 파라미터로 전달하지 않을까
+    const { cartId } = req.params;
+    const userId = req.userId;
+
+    if (!count || !cartId || !userId) {
+      const err = new Error("KEY_ERROR");
+      err.statusCode = 400;
+      throw err;
+    }
+    // 프론트에 수정 dhks료된 결과를 보내줘야 할 경우 다음 로직을 쓴다
+    // updated = await cartService.update(count, cartId, userId);
+    // return res.status(201).json({ data: updated });
+
+    // 프론트에 수정 완료 결과 성공 여부만 보내줄 경우엔 다음 로직을 쓴다
+    await cartService.update(count, cartId, userId);
+    return res.status(201).json({ message: "UPDATE_CART_SUCCESS" });
+  } catch (err) {
+    console.log(err);
+    return res.status(err.statusCode || 500).json({ message: err.message });
+  }
+};
 
 // // 4. 전체 게시글 조회
 // const showAllPost = async (req, res) => {
@@ -126,6 +156,6 @@ const read = async (req, res) => {
 module.exports = {
   create,
   read,
-  // update,
+  update,
   // delete,
 };
