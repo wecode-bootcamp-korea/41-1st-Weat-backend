@@ -7,11 +7,11 @@ const userRouter = require("./userRouter");
 // 장바구니 관련 라우터
 const cartRouter = require("./cartRouter");
 
-// 메인 화면 관련 라우터
-const mainRouter = require("./mainRouter");
+// 제품 리스트 관련 라우터
+const productListRouter = require("./productListRouter");
 
 router.use("/user", userRouter.router);
 router.use("/cart", cartRouter.router);
-router.use("/main", mainRouter.router);
+router.use("/productlist", productListRouter.router);
 
 module.exports = router;
