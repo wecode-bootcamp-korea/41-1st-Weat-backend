@@ -34,6 +34,24 @@ const create = async (req, res) => {
   }
 };
 
+// 2. 장바구니 상품 조회
+const read = async (req, res) => {
+  try {
+    // JWT 로부터 추출한 user id
+    const userId = req.userId;
+    if (!userId) {
+      const err = new Error("KEY_ERROR");
+      err.statusCode = 400;
+      throw err;
+    }
+    cartList = await cartService.read(userId);
+    return res.status(201).json({ data: cartList });
+  } catch (err) {
+    console.log(err);
+    return res.status(err.statusCode || 500).json({ message: err.message });
+  }
+};
+
 // // 4. 전체 게시글 조회
 // const showAllPost = async (req, res) => {
 //   try {
@@ -105,7 +123,7 @@ const create = async (req, res) => {
 
 module.exports = {
   create,
-  // read,
+  read,
   // update,
   // delete,
 };

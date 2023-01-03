@@ -19,10 +19,10 @@ const create = async (itemId, thick, count) => {
   return await cartDao.create(itemId, thick, count);
 };
 
-// // 4. 전체 게시글 조회
-// const showAllPost = async () => {
-//   return await postDao.showAllPost();
-// };
+// 2. 장바구니 조회
+const read = async () => {
+  return await cartDao.read();
+};
 
 // // 5. 유저 게시글 조회
 // const showUserPost = async (userId) => {
@@ -41,7 +41,7 @@ const create = async (itemId, thick, count) => {
 
 module.exports = {
   create,
-  // read,
+  read,
   // update,
   // delete,
   getStock,

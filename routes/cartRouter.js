@@ -10,7 +10,7 @@ const { validateToken } = require("../middlewares/auth.js");
 router.post("/create", validateToken, cartController.create);
 
 // 2. 장바구니 상품 조회
-// router.get("/read", validateToken, cartController.read);
+router.get("/read", validateToken, cartController.read);
 
 // 3. 장바구니 상품 수정
 // router.put("/update", validateToken, cartController.update);
