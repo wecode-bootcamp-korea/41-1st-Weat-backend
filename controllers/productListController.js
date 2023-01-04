@@ -12,6 +12,24 @@ const bestProduct = async (req, res) => {
   }
 };
 
+// 전달받은 카테고리 id별 제품 리스트 리턴
+const productList = async (req, res) => {
+  try {
+    const { category_id } = req.params;
+    if (!category_id) {
+      const err = new Error("KEY_ERROR");
+      err.statusCode = 400;
+      throw err;
+    }
+    cartList = await cartService.readCart(userId);
+    return res.status(201).json({ data: cartList });
+  } catch (err) {
+    console.log(err);
+    return res.status(err.statusCode || 500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   bestProduct,
+  productList,
 };
