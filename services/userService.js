@@ -7,7 +7,7 @@ const saltRounds = 12;
 const secretKey = process.env.SECRET_KEY; // (3)
 
 // 1. 회원가입
-const signUp = async (email, password, name, phoneNumber) => {
+const signUp = async (email, password, name, mobile) => {
   // password validation using REGEX
   const pwValidation = new RegExp(
     "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,20})"
@@ -24,7 +24,7 @@ const signUp = async (email, password, name, phoneNumber) => {
     email,
     hashedPassword,
     name,
-    phoneNumber
+    mobile
   );
 
   return createUser;
