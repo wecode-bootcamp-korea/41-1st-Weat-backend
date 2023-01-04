@@ -1,12 +1,11 @@
 -- migrate:up
-CREATE TABLE orders (
+CREATE TABLE order_options (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  total_price DECIMAL ( 10 , 2 ) NOT NULL,
-  user_id INT NULL,
+  product_option_id INT NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  FOREIGN KEY (product_option_id) REFERENCES product_options(id)
 );
 
 -- migrate:down
-DROP TABLE orders;
+DROP TABLE order_options;

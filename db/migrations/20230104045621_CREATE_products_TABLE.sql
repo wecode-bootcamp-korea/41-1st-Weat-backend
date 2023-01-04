@@ -2,9 +2,9 @@
 CREATE TABLE products (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
-  price DECIMAL NOT NULL,
+  price DECIMAL ( 10, 2 ) NOT NULL,
+  thumbnail_image VARCHAR(1000) NULL,
   base_unit VARCHAR(300) NOT NULL,
-  categories INT NULL,
   stock INT NULL,
   sold INT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -1,7 +1,7 @@
 -- migrate:up
 CREATE TABLE product_options (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
   stock INT NULL,
   product_id INT NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
