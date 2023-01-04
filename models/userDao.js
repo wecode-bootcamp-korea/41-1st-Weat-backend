@@ -20,6 +20,27 @@ const createUser = async (email, hashedPassword, name, mobile) => {
   }
 };
 
+const userExists = async (email) => {
+  try {
+    const result_array = await myDataSource.query(
+      `SELECT EXISTS 
+      (SELECT * 
+        FROM users 
+        WHERE email=?
+        limit 1) 
+        AS exist;
+		  `,
+      [email]
+    );
+    return result_array[0];
+  } catch (err) {
+    console.log(err);
+    const error = new Error("INVALID_DATA_INPUT");
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
 const getHashedPassword = async (email) => {
   try {
     // 1. 입력받은 email 과 매치되는 hashedPassword 를 DB 로부터 가져오기
@@ -62,4 +83,5 @@ module.exports = {
   createUser,
   getHashedPassword,
   getUserID,
+  userExists,
 };

@@ -8,6 +8,15 @@ const secretKey = process.env.SECRET_KEY; // (3)
 
 // 1. 회원가입
 const signUp = async (email, password, name, mobile) => {
+  // 이미 가입된 사용자인지 확인 (메일주소가 DB에 이미 존재하는지 확인)
+  const { exist } = await userDao.userExists(email);
+  if (parseInt(exist)) {
+    const err = new Error("ALREADY_SIGNED_UP");
+    err.statusCode = 409;
+    throw err;
+  }
+
+  // 비밀번호 검증
   // password validation using REGEX
   const pwValidation = new RegExp(
     "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,20})"
@@ -49,7 +58,7 @@ const login = async (email, password) => {
   // 2-2. 입력받은 패스워드 != 해쉬된 패스워드면 에러처리
   if (!(await bcrypt.compare(password, hashedPassword))) {
     const err = new Error("PASSWORD_IS_NOT_VALID");
-    err.statusCode = 401;
+    err.statusCode = 409;
     throw err;
   }
 
