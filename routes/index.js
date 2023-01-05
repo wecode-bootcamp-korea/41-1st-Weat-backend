@@ -6,7 +6,7 @@ const usersRouter = require("./userRouter");
 // 제품 리스트 관련 라우터
 const productListRouter = require("./productListRouter");
 
-router.use("/productlist", productListRouter.router);
-router.use("/users", userRouter.router);
+router.use("/users", usersRouter.router);
+router.use("/lists", productListRouter.router);
 
 module.exports = router;

@@ -3,8 +3,12 @@ const { myDataSource } = require("./myDataSource");
 // 메인페이지에 노출할 판매량 상위 제품을 DB에서 찾아 배열에 담아 리턴
 // 리턴 형태 : [{썸네일 : ~, 제품명 : ~, 가격 : ~, 기준무게/부피/갯수 : ~ }...]
 // 상위 6개 제품만 리턴
-const bestProduct = async () => {
+const bestProduct = async (categoryId) => {
   try {
+    let condition = "";
+    if (cateogryId) {
+      condition = [categoryId];
+    }
     return await myDataSource.query(
       `SELECT 
       thumbnail_image, 
@@ -13,7 +17,8 @@ const bestProduct = async () => {
       base_unit
       FROM products
       ORDER BY sold DESC
-      LIMIT 6`
+      LIMIT 6`,
+      condition
     );
   } catch (err) {
     console.log(err);
