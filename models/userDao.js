@@ -19,57 +19,19 @@ const createUser = async (email, hashedPassword, name, mobile) => {
   }
 };
 
-const userExists = async (email) => {
+const getUserData = async (email) => {
   try {
-    const result_array = await myDataSource.query(
-      `SELECT EXISTS 
-      (SELECT * 
-        FROM users 
-        WHERE email=?
-        limit 1) 
-        AS exist;
-		  `,
-      [email]
-    );
-    return result_array[0];
-  } catch (err) {
-    const error = new Error("INVALID_DATA_INPUT");
-    error.statusCode = 400;
-    throw error;
-  }
-};
-
-const getHashedPassword = async (email) => {
-  try {
-    // 1. 입력받은 email 과 매치되는 hashedPassword 를 DB 로부터 가져오기
-    const [{ hashedPassword }] = await myDataSource.query(
-      `SELECT password AS hashedPassword 
+    // 입력받은 email 과 매치되는 hashedPassword 와 userId를 DB 로부터 가져오기
+    const userData = await myDataSource.query(
+      `SELECT password AS hashedPassword, id AS userId
             FROM users 
             WHERE email = ?;
       `,
       [email]
     );
-    return hashedPassword;
+    return userData;
   } catch (err) {
-    const error = new Error("GET_HASHED_PASSWORD_FAILED");
-    error.statusCode = 400;
-    throw error;
-  }
-};
-
-const getUserID = async (email) => {
-  try {
-    const [{ userId }] = await myDataSource.query(
-      `
-                SELECT id AS userId
-                FROM users
-                WHERE email = ?;
-                `,
-      [email]
-    );
-    return userId;
-  } catch (err) {
-    const error = new Error("GET_USER_ID_FAILED");
+    const error = new Error("GET_USER_DATA_FAILED");
     error.statusCode = 400;
     throw error;
   }
@@ -77,7 +39,5 @@ const getUserID = async (email) => {
 
 module.exports = {
   createUser,
-  getHashedPassword,
-  getUserID,
-  userExists,
+  getUserData,
 };

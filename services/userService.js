@@ -9,8 +9,9 @@ const secretKey = process.env.SECRET_KEY; // (3)
 // 1. 회원가입
 const signUp = async (email, password, name, mobile) => {
   // 이미 가입된 사용자인지 확인 (메일주소가 DB에 이미 존재하는지 확인)
-  const { exist } = await userDao.userExists(email);
-  if (parseInt(exist)) {
+  const userData = await userDao.getUserData(email);
+
+  if (userData.length) {
     const err = new Error("ALREADY_SIGNED_UP");
     err.statusCode = 409;
     throw err;
@@ -42,12 +43,16 @@ const signUp = async (email, password, name, mobile) => {
 // 2. 로그인
 const login = async (email, password) => {
   // 이미 가입된 사용자인지 확인 (메일주소가 DB에 이미 존재하는지 확인)
-  const { exist } = await userDao.userExists(email);
-  if (!parseInt(exist)) {
-    const err = new Error("USER_NOT_EXIST");
+  // const [{ hashedPassword, userId }] = await userDao.getUserData(email);
+  const userData = await userDao.getUserData(email);
+
+  if (!userData.length) {
+    const err = new Error("INVALID_USER");
     err.statusCode = 409;
     throw err;
   }
+
+  const { hashedPassword, userId } = userData[0];
 
   // password validation using REGEX
   const pwValidation = new RegExp(
@@ -59,19 +64,12 @@ const login = async (email, password) => {
     throw err;
   }
 
-  // 2-1. DB로부터 해쉬된 패스워드를 가져옴
-  const hashedPassword = await userDao.getHashedPassword(email);
-  console.log(hashedPassword);
-
   // 2-2. 입력받은 패스워드 != 해쉬된 패스워드면 에러처리
   if (!(await bcrypt.compare(password, hashedPassword))) {
     const err = new Error("PASSWORD_IS_NOT_VALID");
     err.statusCode = 409;
     throw err;
   }
-
-  // 2-3. DB로부터 user ID 받아 옴
-  const userId = await userDao.getUserID(email);
 
   // 2-4. JWT 토큰 생성 & 토큰 리턴
   const payLoad = { userId: userId };
