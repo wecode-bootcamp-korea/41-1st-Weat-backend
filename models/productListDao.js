@@ -7,13 +7,12 @@ const bestProduct = async () => {
   try {
     return await myDataSource.query(
       `SELECT 
-      users.id AS thumbnail, 
-      users.profileImageUrl AS name,
-      posts.id AS price,
-      posts.imageUrl AS 기준무게/부피/갯수
+      thumbnail_image, 
+      name,
+      price,
+      base_unit
       FROM products
-      INNER JOIN posts ON posts.userId = users.id
-      ORDER BY 판매량
+      ORDER BY sold DESC
       LIMIT 6`
     );
   } catch (err) {
@@ -24,21 +23,22 @@ const bestProduct = async () => {
   }
 };
 
-// 메인페이지에 노출할 판매량 상위 제품을 DB에서 찾아 배열에 담아 리턴
+// 카테고리 페이지에 노출할 제품을 DB에서 찾아 배열에 담아 리턴
 // 리턴 형태 : [{썸네일 : ~, 제품명 : ~, 가격 : ~, 기준무게/부피/갯수 : ~ }...]
 // 판매량 순으로 정렬하여 리턴
+// ex) SELECT id FROM likes ORDER BY post_id LIMIT 0, 4;
 const categoryList = async (category_id) => {
   try {
     return await myDataSource.query(
       `SELECT 
-      users.id AS thumbnail, 
-      users.profileImageUrl AS name,
-      posts.id AS price,
-      posts.imageUrl AS 기준무게/부피/갯수
+      thumbnail_image, 
+      name,
+      price,
+      base_unit
       FROM products
-      INNER JOIN posts ON posts.userId = users.id
-      ORDER BY 판매량
-      LIMIT 6`
+      WHERE category_id = ?
+      ORDER BY sold DESC`,
+      [category_id]
     );
   } catch (err) {
     console.log(err);
