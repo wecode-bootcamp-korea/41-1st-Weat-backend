@@ -12,7 +12,7 @@ const signUp = asyncErrorHandler(async (req, res) => {
     throw err;
   }
 
-  await userService.signUp(email, password, name, phoneNumber);
+  await userService.signUp(email, password, name, mobile);
   res.status(201).json({ message: "SIGNUP_SUCCESS" });
 });
 
