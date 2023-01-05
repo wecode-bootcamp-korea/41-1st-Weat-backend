@@ -13,16 +13,18 @@ const bestProduct = async (req, res) => {
 };
 
 // 전달받은 카테고리 id별 제품 리스트 리턴
-const productList = async (req, res) => {
+const categoryList = async (req, res) => {
   try {
     const { category_id } = req.params;
+    // 카테고리 id 를 전달받지 않았다면 기본 카테고리(첫번째 카테고리) 제품 리스트 리턴
     if (!category_id) {
-      const err = new Error("KEY_ERROR");
-      err.statusCode = 400;
-      throw err;
+      category_id = 1;
+      // const err = new Error("PARAMETER_ERROR");
+      // err.statusCode = 400;
+      // throw err;
     }
-    cartList = await cartService.readCart(userId);
-    return res.status(201).json({ data: cartList });
+    categoryList = await productListService.categoryList(category_id);
+    return res.status(201).json({ data: categoryList });
   } catch (err) {
     console.log(err);
     return res.status(err.statusCode || 500).json({ message: err.message });
@@ -31,5 +33,5 @@ const productList = async (req, res) => {
 
 module.exports = {
   bestProduct,
-  productList,
+  categoryList,
 };

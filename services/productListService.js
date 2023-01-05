@@ -8,6 +8,12 @@ const bestProduct = async () => {
   return await productListDao.bestProduct();
 };
 
+// 각 카테고리별 페이지에 노출할 제품을 DB에서 찾아 배열에 담아 리턴
+const categoryList = async (category_id) => {
+  return await productListDao.categoryList(category_id);
+};
+
 module.exports = {
   bestProduct,
+  categoryList,
 };
