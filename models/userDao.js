@@ -13,9 +13,8 @@ const createUser = async (email, hashedPassword, name, mobile) => {
       [email, hashedPassword, name, mobile]
     );
   } catch (err) {
-    console.log(err);
     const error = new Error("INVALID_DATA_INPUT");
-    error.statusCode = 500;
+    error.statusCode = 400;
     throw error;
   }
 };
@@ -34,9 +33,8 @@ const userExists = async (email) => {
     );
     return result_array[0];
   } catch (err) {
-    console.log(err);
     const error = new Error("INVALID_DATA_INPUT");
-    error.statusCode = 500;
+    error.statusCode = 400;
     throw error;
   }
 };
@@ -48,14 +46,13 @@ const getHashedPassword = async (email) => {
       `SELECT password AS hashedPassword 
             FROM users 
             WHERE email = ?;
-                `,
+      `,
       [email]
     );
     return hashedPassword;
   } catch (err) {
-    console.log(err);
     const error = new Error("GET_HASHED_PASSWORD_FAILED");
-    error.statusCode = 500;
+    error.statusCode = 400;
     throw error;
   }
 };
@@ -72,9 +69,8 @@ const getUserID = async (email) => {
     );
     return userId;
   } catch (err) {
-    console.log(err);
     const error = new Error("GET_USER_ID_FAILED");
-    error.statusCode = 500;
+    error.statusCode = 400;
     throw error;
   }
 };

@@ -41,6 +41,14 @@ const signUp = async (email, password, name, mobile) => {
 
 // 2. 로그인
 const login = async (email, password) => {
+  // 이미 가입된 사용자인지 확인 (메일주소가 DB에 이미 존재하는지 확인)
+  const { exist } = await userDao.userExists(email);
+  if (!parseInt(exist)) {
+    const err = new Error("USER_NOT_EXIST");
+    err.statusCode = 409;
+    throw err;
+  }
+
   // password validation using REGEX
   const pwValidation = new RegExp(
     "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,20})"
