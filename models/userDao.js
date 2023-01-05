@@ -7,8 +7,10 @@ const createUser = async (email, hashedPassword, name, mobile) => {
 		    email,
 		    password,
         name,
-		    mobile
-		) VALUES (?, ?, ?, ?);
+		    mobile,
+        level,
+        point
+		) VALUES (?, ?, ?, ?, 1, 0);
 		`,
       [email, hashedPassword, name, mobile]
     );
