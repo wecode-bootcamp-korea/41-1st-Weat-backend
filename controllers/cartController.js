@@ -1,19 +1,8 @@
 const cartService = require("../services/cartService");
+const { asyncErrorHandler } = require("../middlewares/errorHandling");
 
 // 1. 장바구니 상품 담기
-// router.post("/create", validateToken, cartController.create);
-
-// 2. 장바구니 상품 조회
-// router.get("/read", validateToken, cartController.read);
-
-// 3. 장바구니 상품 수정
-// router.put("/update", validateToken, cartController.update);
-
-// 4. 장바구니 상품 삭제
-// router.delete("/delete", validateToken, cartController.delete);
-
-// 1. 장바구니 상품 담기
-const createCart = async (req, res) => {
+const createCart = asyncErrorHandler(async (req, res) => {
   try {
     const { itemId, thick, count } = req.body;
     // JWT 로부터 추출한 user id
@@ -32,10 +21,10 @@ const createCart = async (req, res) => {
     console.log(err);
     return res.status(err.statusCode || 500).json({ message: err.message });
   }
-};
+});
 
 // 2. 장바구니 상품 조회
-const readCart = async (req, res) => {
+const readCart = asyncErrorHandler(async (req, res) => {
   try {
     // JWT 로부터 추출한 user id
     const userId = req.userId;
@@ -50,13 +39,13 @@ const readCart = async (req, res) => {
     console.log(err);
     return res.status(err.statusCode || 500).json({ message: err.message });
   }
-};
+});
 
 // 3. 장바구니 상품 수정 (주문수량 증가/감소)
 // request 파라미터로 상품의 id (itemId) 전달받아 DB 업데이트
 // request body 에서 전달받은 count로 주문수량 업데이트
 // API 문서 작성 시 프론트에서 {"count" : 10} 형태로 request 날려달라고 하기.
-const updateCart = async (req, res) => {
+const updateCart = asyncErrorHandler(async (req, res) => {
   try {
     const { count } = req.body;
     // 만약 프론트에서 cartId 를 body 에 담아서 전달할 경우
@@ -81,10 +70,10 @@ const updateCart = async (req, res) => {
     console.log(err);
     return res.status(err.statusCode || 500).json({ message: err.message });
   }
-};
+});
 
 // 4. 장바구니 상품 삭제
-const deleteCart = async (req, res) => {
+const deleteCart = asyncErrorHandler(async (req, res) => {
   try {
     const { cartId } = req.params;
 
@@ -101,7 +90,7 @@ const deleteCart = async (req, res) => {
     console.log(err);
     return res.status(err.statusCode || 500).json({ message: err.message });
   }
-};
+});
 
 module.exports = {
   createCart,
