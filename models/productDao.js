@@ -1,8 +1,13 @@
 const { myDataSource } = require("./myDataSource");
 
-const pageNation = 9;
-
-const productList = async (best, category, page) => {
+const productList = async (
+  best,
+  category,
+  page,
+  pageNation,
+  filter,
+  filter_option
+) => {
   try {
     const fullQuery = [];
     const defaultQuery = `SELECT id, thumbnail_image, name, price, base_unit FROM products`;
@@ -23,8 +28,11 @@ const productList = async (best, category, page) => {
       // category 또는 page 값이 없으면 기본값 1 할당
       if (!category) category = 1;
       if (!page) page = 1;
+      if (!pageNation) pageNation = 9;
+      if (!filter) filter = "sold";
+      if (!filter_option) filter_option = "DESC";
 
-      const orderQuery = `WHERE category_id = ${category} ORDER BY sold DESC LIMIT ${
+      const orderQuery = `WHERE category_id = ${category} ORDER BY ${filter} ${filter_option} LIMIT ${
         (page - 1) * pageNation
       }, ${pageNation}`;
       fullQuery.push(orderQuery);
@@ -34,7 +42,7 @@ const productList = async (best, category, page) => {
   } catch (err) {
     console.log(err);
     const error = new Error("DB_SELECT_FAILED");
-    error.statusCode = 500;
+    error.statusCode = 400;
     throw error;
   }
 };

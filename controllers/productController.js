@@ -1,4 +1,4 @@
-const productListService = require("../services/productListService");
+const productService = require("../services/productService");
 const { asyncErrorHandler } = require("../middlewares/errorHandling");
 
 // 메인화면 top6
@@ -14,12 +14,15 @@ const { asyncErrorHandler } = require("../middlewares/errorHandling");
 // url/lists?category=2&page=2
 
 const productList = asyncErrorHandler(async (req, res) => {
-  const { best, category, page } = req.query;
+  const { best, category, page, pageNation, filter, filter_option } = req.query;
 
-  const productListArray = await productListService.productList(
+  const productListArray = await productService.productList(
     best,
     category,
-    page
+    page,
+    pageNation,
+    filter,
+    filter_option
   );
   return res.status(201).json({ data: productListArray });
 });

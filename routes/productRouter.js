@@ -1,5 +1,5 @@
 const express = require("express");
-const productListController = require("../controllers/productListController");
+const productController = require("../controllers/productController");
 
 const router = express.Router();
 
@@ -19,9 +19,7 @@ const router = express.Router();
 // 선택 카테고리 = 1(pork), 2페이지
 // url/lists?category=1&page=2
 
-router.get("/", productListController.productList);
-
-// router.get("/:category_id/:pageNumber", productListController.productList);
+router.get("/", productController.productList);
 
 module.exports = {
   router,
