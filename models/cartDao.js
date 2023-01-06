@@ -2,16 +2,15 @@ const { myDataSource } = require("./myDataSource");
 
 // 1. 장바구니에 상품 추가
 // await cartDao.create(itemId, thick, count);
-const createCart = async (itemId, thick, count) => {
+const createCart = async (userId, productId, productOptionId, quantity) => {
   try {
     return await myDataSource.query(
-      `INSERT INTO cart(
-		    item_id,
-		    thick,
-            count
-		) VALUES (?, ?, ?);
+      `INSERT INTO carts(
+		    quantity, user_id, product_id, product_option_id, 
+		) VALUES (?, ?, ?, ?)
+    UPDAT;
 		`,
-      [itemId, thick, count]
+      [quantity, userId, productId, productOptionId]
     );
   } catch (err) {
     console.log(err);
@@ -88,19 +87,18 @@ const updateCart = async (count, itemId, userId) => {
   }
 };
 
-const getStock = async (itemId) => {
+const getStock = async (productId) => {
   try {
     // item DB로부터 itemId 에 해당하는 재고(stock) 을 가져옴
     const [{ stock }] = await myDataSource.query(
       `SELECT stock
-        FROM item 
-        WHERE item_id = ?;
+        FROM products 
+        WHERE product_id = ?;
         `,
-      [itemId]
+      [productId]
     );
     return stock;
   } catch (err) {
-    console.log(err);
     const error = new Error("GET_STOCK_FAILED");
     error.statusCode = 500;
     throw error;
