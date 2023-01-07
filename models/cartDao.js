@@ -16,51 +16,32 @@ const upsertCart = async (userId, productId, productOptionId, quantity) => {
   } catch (err) {
     const error = new Error("DB_SELECT_FAILED");
     error.statusCode = 500;
+    // 최종 리턴 배열 : [{썸네일, 상품명, 옵션, 수량, 가격}, {}...]
     throw error;
   }
 };
 
 // 2. 장바구니 상품 조회
-// DB 에서 꺼낼 것 : user_id 로 row 조회 -> 상품 id, 두께, 수량 조회
-// 꺼낸 상품 id 를 이용해 해당 상품의 썸네일, name, 개당 가격 조회
-// 최종 리턴 배열 : [{썸네일, 상품명, 옵션, 수량, 가격}, {}...]
-/*
-      `SELECT 
-      users.id AS userId, 
-      users.profileImageUrl AS userProfileImage,
-      posts.id AS postingId,
-      posts.imageUrl AS postingImageUrl,
-      posts.content AS postingContent
-      FROM users
-      INNER JOIN posts ON posts.userId = users.id`
-      */
-/* carts
-`id`, `quantity`, `user_id`, `product_id`, `product_option_id`
-*/
-
-/* products
-`id`, `name`, `price`, `thumbnail_image`, `base_unit`, `stock`, `sold`, `category_id`
-*/
 const readCart = async (userId) => {
   try {
-    return await myDataSource.query(
+    const [cartList] = await myDataSource.query(
       `SELECT
-        product_id, 
-        product_option_id,
-        quantity
-        FROM carts
-        WHERE users.id = ?;`,
-      [userId]`SELECT
-        thumbnail_image,
-        products.name,
-        product_options.name
-        products.quantity,
-        products.price
-        FROM products
-        INNER JOIN product_options ON product_options.id = products.product_option_id;
-        WHERE products.id = ?;`,
-      [productId]
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+          'thumbnail', products.thumbnail_image,
+          'productName', products.name,
+          'optionName', product_options.name, 
+          'price', products.price,
+          'quantity', carts.quantity
+          )
+        ) AS cartList
+      FROM carts
+      INNER JOIN product_options ON product_options.id = carts.product_option_id
+      INNER JOIN products ON products.id = carts.product_id
+      WHERE carts.user_id = ?;`,
+      [userId]
     );
+    return cartList;
   } catch (err) {
     console.log(err);
     const error = new Error("DB_SELECT_FAILED");
@@ -69,6 +50,23 @@ const readCart = async (userId) => {
   }
 };
 
+// 4. 장바구니 상품 삭제
+const deleteCart = async (cartId) => {
+  try {
+    await myDataSource.query(
+      `DELETE FROM posts
+          WHERE posts.id = ${cartId}
+          `
+    );
+  } catch (err) {
+    console.log(err);
+    const error = new Error("DB_DELETE_FAILED");
+    error.statusCode = 500;
+    throw error;
+  }
+};
+
+// 99. 재고 조회
 const getStock = async (productOptionId) => {
   try {
     // item DB로부터 itemId 에 해당하는 재고(stock) 을 가져옴
@@ -82,21 +80,6 @@ const getStock = async (productOptionId) => {
     return stock;
   } catch (err) {
     const error = new Error("GET_STOCK_FAILED");
-    error.statusCode = 500;
-    throw error;
-  }
-};
-// 4. 장바구니 상품 삭제
-const deleteCart = async (cartId) => {
-  try {
-    await myDataSource.query(
-      `DELETE FROM posts
-          WHERE posts.id = ${cartId}
-          `
-    );
-  } catch (err) {
-    console.log(err);
-    const error = new Error("DB_DELETE_FAILED");
     error.statusCode = 500;
     throw error;
   }
