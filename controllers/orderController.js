@@ -2,7 +2,6 @@ const orderService = require("../services/orderService");
 const { asyncErrorHandler } = require("../middlewares/errorHandling");
 
 const order_tmp_obj = {
-  cartId: [],
   deliveryData: {
     address: {
       from_name: undefined,
@@ -15,6 +14,10 @@ const order_tmp_obj = {
     receive: {
       date: undefined,
       time: undefined,
+    },
+    request: {
+      enter: undefined,
+      alert: undefined,
     },
   },
 };
@@ -38,10 +41,12 @@ const order_tmp_obj = {
 // order_products : `id`, `quantity`, `order_id`, `product_id`, `product_option_id`
 
 // 참고
-// carts : `id`, `quantity`, `user_id`, `product_id`, `product_option_id`
+// carts : `id`, `user_id`, `quantity`, `product_id`, `product_option_id`
 
-// 재고 체크
-const checkStock = asyncErrorHandler(async (req, res) => {
+// deliveries : `id`, `from_name`, `from_mobile`, `from_email`, `to_name`, `to_mobile`, `to_address`, `order_id`
+
+const getUserPoint = asyncErrorHandler(async (req, res) => {
+  // 2. 배송정보
   const userId = req.userId;
 
   if (!userId) {
@@ -49,68 +54,39 @@ const checkStock = asyncErrorHandler(async (req, res) => {
     err.statusCode = 400;
     throw err;
   }
-  // checkStock : 로그인된 사용자의 주문 정보를 조회하여 재고를 확인한다.
-  // 만약 재고가 부족한 상품이 있으면 해당 cart id 들이 담긴 배열을 리턴한다.
-  const soldOutCartIdList = await orderService.checkStock(userId);
-  if (soldOutCartIdList.length) {
-    return res.status(201).json(soldOutCartIdList);
-  }
-  return res.status(201).json("STOCKS_ARE_ENOUGH");
+
+  await orderService.getUserPoint(userId);
+  return res.status(201).json({ message: "GET_POINT_SUCCESS" });
 });
 
+// userId, totalPrice
 const order = asyncErrorHandler(async (req, res) => {
   // 2. 배송정보
-  // deliveries : `from_name`, `from_mobile`, `from_email`, `to_name`, `to_mobile`, `to_address`, `order_id`
   const userId = req.userId;
-  const { from_name, from_mobile, from_email, to_name, to_mobile, to_address } =
-    req.body;
+  const { deliveryData } = req.body;
 
+  if (!userId) {
+    const err = new Error("PARAMS_ERROR");
+    err.statusCode = 400;
+    throw err;
+  }
   if (
-    !from_name ||
-    !from_mobile ||
-    !from_email ||
-    !to_name ||
-    !to_mobile ||
-    !to_address
+    !deliveryData.from_name ||
+    !deliveryData.from_mobile ||
+    !deliveryData.from_email ||
+    !deliveryData.to_name ||
+    !deliveryData.to_mobile ||
+    !deliveryData.to_address
   ) {
     const err = new Error("KEY_ERROR");
     err.statusCode = 400;
     throw err;
   }
-  await orderService.order(userId, productId, productOptionId, quantity);
+  await orderService.order(userId, deliveryData);
   return res.status(201).json({ message: "ORDER_SUCCESS" });
 });
 
-// 2. 장바구니 상품 조회
-const readorder = asyncErrorHandler(async (req, res) => {
-  // JWT 로부터 추출한 user id
-  const userId = req.userId;
-  if (!userId) {
-    const err = new Error("KEY_ERROR");
-    err.statusCode = 400;
-    throw err;
-  }
-  orderList = await orderService.readorder(userId);
-  return res.status(201).json(orderList);
-  // return res.status(201).json({ data: orderList });
-});
-
-// 4. 장바구니 상품 삭제
-const deleteorder = asyncErrorHandler(async (req, res) => {
-  const { orderId } = req.params;
-
-  if (!orderId) {
-    const err = new Error("KEY_ERROR");
-    err.statusCode = 400;
-    throw err;
-  }
-  await orderService.deleteorder(orderId);
-  return res.status(200).json({
-    message: "DELETE_order_SUCCESS",
-  });
-});
-
 module.exports = {
-  checkStock,
+  getUserPoint,
   order,
 };
