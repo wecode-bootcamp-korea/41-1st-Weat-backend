@@ -6,7 +6,7 @@ const userRouter = require("./userRouter");
 // 장바구니 관련 라우터
 const cartRouter = require("./cartRouter");
 
-router.use("/carts", cartRouter.router);
 router.use("/users", userRouter.router);
+router.use("/carts", cartRouter.router);
 
 module.exports = router;
