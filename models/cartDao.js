@@ -44,7 +44,6 @@ const readCart = async (userId) => {
     );
     return cartList;
   } catch (err) {
-    console.log(err);
     const error = new Error("DB_SELECT_FAILED");
     error.statusCode = 500;
     throw error;
@@ -60,7 +59,6 @@ const deleteCart = async (cartId) => {
           `
     );
   } catch (err) {
-    console.log(err);
     const error = new Error("DB_DELETE_FAILED");
     error.statusCode = 500;
     throw error;
