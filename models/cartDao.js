@@ -28,6 +28,7 @@ const readCart = async (userId) => {
       `SELECT
         JSON_ARRAYAGG(
           JSON_OBJECT(
+          'cartId', carts.id,
           'thumbnail', products.thumbnail_image,
           'productName', products.name,
           'optionName', product_options.name, 
@@ -54,8 +55,8 @@ const readCart = async (userId) => {
 const deleteCart = async (cartId) => {
   try {
     await myDataSource.query(
-      `DELETE FROM posts
-          WHERE posts.id = ${cartId}
+      `DELETE FROM carts
+          WHERE carts.id = ${cartId}
           `
     );
   } catch (err) {

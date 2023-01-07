@@ -13,7 +13,7 @@ router.post("/upsert", validateToken, cartController.upsertCart);
 router.get("/read", validateToken, cartController.readCart);
 
 // 4. 장바구니 상품 삭제
-router.delete("/delete", validateToken, cartController.deleteCart);
+router.delete("/delete/:cartId", validateToken, cartController.deleteCart);
 
 module.exports = {
   router,

@@ -31,7 +31,7 @@ const readCart = asyncErrorHandler(async (req, res) => {
 
 // 4. 장바구니 상품 삭제
 const deleteCart = asyncErrorHandler(async (req, res) => {
-  const { cartId } = req.body;
+  const { cartId } = req.params;
 
   if (!cartId) {
     const err = new Error("KEY_ERROR");
