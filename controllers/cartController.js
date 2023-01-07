@@ -3,8 +3,8 @@ const { asyncErrorHandler } = require("../middlewares/errorHandling");
 
 // 1. 장바구니 상품 추가 / 수량 변경 (주문수량 증가/감소)
 const upsertCart = asyncErrorHandler(async (req, res) => {
-  const { productId, productOptionId, quantity } = req.body;
   const userId = req.userId;
+  const { productId, productOptionId, quantity } = req.body;
 
   if (!userId || !productId || !productOptionId || !quantity) {
     const err = new Error("KEY_ERROR");
