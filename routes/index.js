@@ -2,11 +2,14 @@ const express = require("express");
 const router = express.Router();
 
 // 회원가입, 로그인 등 사용자 정보 관련 라우터
-const userRouter = require("./userRouter");
+const usersRouter = require("./userRouter");
+// 제품 리스트 관련 라우터
+const productsRouter = require("./productRouter");
 // 장바구니 관련 라우터
 const cartRouter = require("./cartRouter");
 
-router.use("/users", userRouter.router);
+router.use("/users", usersRouter.router);
+router.use("/products", productsRouter.router);
 router.use("/carts", cartRouter.router);
 
 module.exports = router;
