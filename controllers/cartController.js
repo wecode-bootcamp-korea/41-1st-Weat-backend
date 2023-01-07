@@ -20,7 +20,7 @@ const readCart = asyncErrorHandler(async (req, res) => {
   // JWT 로부터 추출한 user id
   const userId = req.userId;
   if (!userId) {
-    const err = new Error("KEY_ERROR");
+    const err = new Error("PARAMS_ERROR");
     err.statusCode = 400;
     throw err;
   }
