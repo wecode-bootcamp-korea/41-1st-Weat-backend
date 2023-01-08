@@ -1,26 +1,5 @@
 const { myDataSource } = require("./myDataSource");
 
-// 1. 장바구니 상품 추가 / 수정 (주문수량 증가/감소)
-const upsertCart = async (userId, productId, productOptionId, quantity) => {
-  try {
-    // 장바구니 수량 수정
-    await myDataSource.query(
-      `INSERT INTO 
-      carts(user_id, product_id, product_option_id, quantity ) 
-      VALUES (?, ?, ?, ?)
-      ON DUPLICATE KEY UPDATE 
-      quantity = ?;
-        `,
-      [userId, productId, productOptionId, quantity, quantity]
-    );
-  } catch (err) {
-    const error = new Error("DB_SELECT_FAILED");
-    error.statusCode = 500;
-    // 최종 리턴 배열 : [{썸네일, 상품명, 옵션, 수량, 가격}, {}...]
-    throw error;
-  }
-};
-
 // 2. 장바구니 상품 조회
 const readCart = async (userId) => {
   try {
@@ -50,21 +29,6 @@ const readCart = async (userId) => {
   }
 };
 
-// 4. 장바구니 상품 삭제
-const deleteCart = async (cartId) => {
-  try {
-    await myDataSource.query(
-      `DELETE FROM carts
-          WHERE carts.id = ${cartId}
-          `
-    );
-  } catch (err) {
-    const error = new Error("DB_DELETE_FAILED");
-    error.statusCode = 500;
-    throw error;
-  }
-};
-
 // 99. 재고 조회
 const getStock = async (productOptionId) => {
   try {
@@ -86,7 +50,4 @@ const getStock = async (productOptionId) => {
 
 module.exports = {
   readCart,
-  upsertCart,
-  deleteCart,
-  getStock,
 };
