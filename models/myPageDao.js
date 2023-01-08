@@ -1,5 +1,6 @@
 const { myDataSource } = require("./myDataSource");
 
+// 1. 사용자 기본정보 조회
 const userInfo = async (userId) => {
   try {
     return await myDataSource.query(
@@ -20,25 +21,6 @@ const userInfo = async (userId) => {
   }
 };
 
-const readPrivateInfo = async (userId) => {
-  try {
-    return await myDataSource.query(
-      `SELECT
-        name AS userName,
-        email,
-        mobile
-      FROM users
-      WHERE id = ?;`,
-      [userId]
-    );
-  } catch (err) {
-    const error = new Error("INQUIRE_PRIVATE_INFO_FAILED");
-    error.statusCode = 500;
-    throw error;
-  }
-};
-
 module.exports = {
   userInfo,
-  readPrivateInfo,
 };
