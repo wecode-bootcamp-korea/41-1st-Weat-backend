@@ -9,10 +9,13 @@ const productsRouter = require("./productRouter");
 const cartsRouter = require("./cartRouter");
 // 결제 관련 라우터
 const ordersRouter = require("./orderRouter");
+// 마이페이지 라우터
+const myPageRouter = require("./myPageRouter");
 
 router.use("/users", usersRouter.router);
 router.use("/products", productsRouter.router);
 router.use("/carts", cartsRouter.router);
 router.use("/orders", ordersRouter.router);
+router.use("/mypage", myPageRouter.router);
 
 module.exports = router;
