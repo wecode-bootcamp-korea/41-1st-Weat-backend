@@ -176,7 +176,8 @@ const read = async (userId) => {
         INNER JOIN products ON products.id = order_products.product_id
         INNER JOIN product_options ON product_options.id = order_products.product_option_id
         WHERE orders.user_id = ?
-        GROUP BY orders.id;`,
+        GROUP BY orders.id
+        ORDER BY orders.id DESC;`,
       [userId]
     );
     return orderList;
