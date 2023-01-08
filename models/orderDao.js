@@ -98,6 +98,33 @@ const order = async (userId, ordersObj) => {
     throw error;
   }
 
+  // 재고 차감
+  try {
+    for (product of ordersObj.products) {
+      await myDataSource.query(
+        `UPDATE products
+        SET stock = stock - ?
+        WHERE id = ?;
+      `,
+        [product.quantity, product.id]
+      );
+    }
+    // 옵션 재고도 차감
+    for (product of ordersObj.products) {
+      await myDataSource.query(
+        `UPDATE product_options
+        SET stock = stock - ?
+        WHERE id = ?;
+      `,
+        [product.quantity, product.optionId]
+      );
+    }
+  } catch (err) {
+    const error = new Error("DEDUCT_STOCK_FAILED");
+    error.statusCode = 500;
+    throw error;
+  }
+
   try {
     // 장바구니 삭제
     await myDataSource.query(
