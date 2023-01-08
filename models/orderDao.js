@@ -125,8 +125,25 @@ const order = async (userId, ordersObj) => {
     throw error;
   }
 
+  // 판매량 증가
   try {
-    // 장바구니 삭제
+    for (product of ordersObj.products) {
+      await myDataSource.query(
+        `UPDATE products
+      SET sold = sold + ?
+      WHERE id = ?;
+    `,
+        [product.quantity, product.id]
+      );
+    }
+  } catch (err) {
+    const error = new Error("ADD_SOLD_QUANTITY_FAILED");
+    error.statusCode = 500;
+    throw error;
+  }
+
+  // 장바구니 삭제
+  try {
     await myDataSource.query(
       `DELETE FROM carts WHERE user_id = ?
     `,
@@ -139,6 +156,7 @@ const order = async (userId, ordersObj) => {
   }
 };
 
+// 주문/결제 내역 조회
 const read = async (userId) => {
   try {
     const orderList = await myDataSource.query(
