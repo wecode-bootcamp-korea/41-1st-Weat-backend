@@ -114,20 +114,27 @@ const order = async (userId, ordersObj) => {
 
 const read = async (userId) => {
   try {
-    const resultOrder = await myDataSource.query(
+    const orderList = await myDataSource.query(
       `SELECT
         orders.id AS orderId,
-        (SELECT thumbnail_image FROM products WHERE products.id = order_products.product_id) AS thumbnail,
-        (SELECT name FROM products WHERE products.id = order_products.product_id) AS productName,
-        (SELECT name FROM product_options WHERE product_options.id = order_products.product_option_id) AS optionName,
-        (SELECT price FROM products WHERE products.id = order_products.product_id) AS price,
-        order_products.quantity AS quantity
-      FROM orders
-      INNER JOIN order_products ON order_products.order_id = orders.id
-      WHERE orders.user_id = ?`,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'thumbnail', products.thumbnail_image,
+            'productName', products.name,
+            'optionName', product_options.name,
+            'price', products.price,
+            'quantity', order_products.quantity
+          )
+        )AS List
+        FROM orders
+        INNER JOIN order_products ON order_products.order_id = orders.id
+        INNER JOIN products ON products.id = order_products.product_id
+        INNER JOIN product_options ON product_options.id = order_products.product_option_id
+        WHERE orders.user_id = ?
+        GROUP BY orders.id;`,
       [userId]
     );
-    return resultOrder;
+    return orderList;
   } catch (err) {
     const error = new Error("INQUIRE_ORDER_RESULT_DB_FAILED");
     error.statusCode = 500;

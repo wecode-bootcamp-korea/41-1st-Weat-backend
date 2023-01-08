@@ -44,8 +44,8 @@ const read = asyncErrorHandler(async (req, res) => {
     throw err;
   }
 
-  const resultOrder = await orderService.read(userId);
-  return res.status(201).json({ resultOrder });
+  const orderList = await orderService.read(userId);
+  return res.status(201).json({ orderList });
 });
 
 module.exports = {
