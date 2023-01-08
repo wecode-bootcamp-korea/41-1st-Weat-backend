@@ -2,78 +2,141 @@ const { myDataSource } = require("./myDataSource");
 
 const getUserPoint = async (userId) => {
   try {
-    return await myDataSource.query(
-      `SELECT poinr
+    const [{ point }] = await myDataSource.query(
+      `SELECT point
         FROM users
         WHERE id = ?;`,
       [userId]
     );
+    return point;
   } catch (err) {
-    const error = new Error("DB_SELECT_FAILED");
+    const error = new Error("INQUIRE_POINT_FAILED");
     error.statusCode = 500;
     throw error;
   }
 };
 
-// orders : `id`, `total_price`, `user_id`
-// order_products : `id`, `quantity`, `order_id`, `product_id`, `product_option_id`
-// carts : `id`, `user_id`, `quantity`, `product_id`, `product_option_id`
-// deliveries : `id`, `from_name`, `from_mobile`, `from_email`, `to_name`, `to_mobile`, `to_address`, `order_id`
+const order = async (userId, ordersObj) => {
+  let orderId = undefined;
 
-const order = async (orderObj) => {
+  // DB에 주문정보 저장
+  // 주문정보 생성 (orders) 후 생성된 order.id 리턴
+  // 생성된 order.id 를 받아오기 위해 쿼리 뒤에 RETURNING id; 를 붙였는데 RETURNING 이 prstgreSQL 문법이라 여기서는 안 먹습니다.
+  // 차선책으로 SELECT LAST_INSERT_ID() AS id 를 썼는데 동시에 여러 주문이 이루어지는 실서비스에서는 부적합할 것 같습니다.
+  // INSERT 즉시 id 즉 PK 를 받아오는 방법이 없을까요?
   try {
-    // 주문정보 생성 (orders)
     await myDataSource.query(
       `INSERT INTO orders(
-		    , user_id, total_price
-		) VALUES (?, ?);
-		`,
-      [userId, totalPrice]
+          user_id, total_price
+    ) VALUES (?, ?);
+    `,
+      [userId, ordersObj.totalPrice]
     );
 
-    return orderList;
+    // 이후 로직에서 사용하기 위해 방금 생성된 order id 를 저장해둔다.
+    [{ orderId }] = await myDataSource.query(
+      `SELECT LAST_INSERT_ID() AS orderId;`
+    );
   } catch (err) {
-    const error = new Error("DB_SELECT_FAILED");
+    const error = new Error("ORDER_DB_FAILED");
     error.statusCode = 500;
     throw error;
   }
-};
 
-// 4. 장바구니 상품 삭제
-const deleteorder = async (orderId) => {
+  // 배송지 정보 저장 (deliveries)
   try {
     await myDataSource.query(
-      `DELETE FROM orders
-          WHERE orders.id = ${orderId}
-          `
+      `INSERT INTO deliveries(
+        from_name, from_mobile, from_email, to_name, to_mobile, to_address, order_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?);
+      `,
+      [
+        ordersObj.deliveries.fromName,
+        ordersObj.deliveries.fromMobile,
+        ordersObj.deliveries.fromEmail,
+        ordersObj.deliveries.toName,
+        ordersObj.deliveries.toMobile,
+        ordersObj.deliveries.toAddress,
+        orderId,
+      ]
     );
   } catch (err) {
-    console.log(err);
-    const error = new Error("DB_DELETE_FAILED");
+    const error = new Error("DELIVERIES_DB_FAILED");
+    error.statusCode = 500;
+    throw error;
+  }
+
+  // 상품정보 저장
+  try {
+    for (product of ordersObj.products) {
+      await myDataSource.query(
+        `INSERT INTO order_products(
+          product_id, product_option_id, quantity, order_id
+        ) VALUES (?, ?, ?, ?);
+      `,
+        [product.id, product.optionId, product.quantity, orderId]
+      );
+    }
+  } catch (err) {
+    const error = new Error("ORDER_DB_FAILED");
+    error.statusCode = 500;
+    throw error;
+  }
+
+  // 포인트 차감
+  try {
+    await myDataSource.query(
+      `UPDATE users
+      SET point = point - ?
+			WHERE id = ?;
+    `,
+      [ordersObj.totalPrice, userId]
+    );
+  } catch (err) {
+    const error = new Error("PAYMENT_FAILED");
+    error.statusCode = 500;
+    throw error;
+  }
+
+  try {
+    // 장바구니 삭제
+    await myDataSource.query(
+      `DELETE FROM carts WHERE user_id = ?
+    `,
+      [userId]
+    );
+  } catch (err) {
+    const error = new Error("INITIALIZE_CART_FAILED");
     error.statusCode = 500;
     throw error;
   }
 };
 
-// 99. 재고 조회
-const getStock = async (productOptionId) => {
+const read = async (userId) => {
   try {
-    // item DB로부터 itemId 에 해당하는 재고(stock) 을 가져옴
-    const [{ stock }] = await myDataSource.query(
-      `SELECT stock
-        FROM product_options
-        WHERE id = ?;
-        `,
-      [productOptionId]
+    const resultOrder = await myDataSource.query(
+      `SELECT
+        orders.id AS orderId,
+        (SELECT thumbnail_image FROM products WHERE products.id = order_products.product_id) AS thumbnail,
+        (SELECT name FROM products WHERE products.id = order_products.product_id) AS productName,
+        (SELECT name FROM product_options WHERE product_options.id = order_products.product_option_id) AS optionName,
+        (SELECT price FROM products WHERE products.id = order_products.product_id) AS price,
+        order_products.quantity AS quantity
+      FROM orders
+      INNER JOIN order_products ON order_products.order_id = orders.id
+      WHERE orders.user_id = ?`,
+      [userId]
     );
-    return stock;
+    return resultOrder;
   } catch (err) {
-    const error = new Error("GET_STOCK_FAILED");
+    const error = new Error("INQUIRE_ORDER_RESULT_DB_FAILED");
     error.statusCode = 500;
     throw error;
   }
 };
 
 module.exports = {
+  order,
   getUserPoint,
+  read,
 };

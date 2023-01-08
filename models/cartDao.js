@@ -25,9 +25,9 @@ const upsertCart = async (userId, productId, productOptionId, quantity) => {
 const readCart = async (userId) => {
   try {
     const [cartList] = await myDataSource.query(
-      `SELECT
+      `SELECT     
         JSON_ARRAYAGG(
-          JSON_OBJECT(
+          JSON_OBJECT( 
           'cartId', carts.id,
           'thumbnail', products.thumbnail_image,
           'productName', products.name,
