@@ -4,15 +4,15 @@ const { asyncErrorHandler } = require("../middlewares/errorHandling");
 // 1. 회원가입
 const signUp = asyncErrorHandler(async (req, res) => {
   // 가입 필수 정보 : 메일주소, 비밀번호, 실명, 핸드폰번호
-  const { email, password, userName, mobile } = req.body;
+  const { email, password, username, mobile } = req.body;
 
-  if (!email || !password || !userName || !mobile) {
+  if (!email || !password || !username || !mobile) {
     const err = new Error("KEY_ERROR");
     err.statusCode = 400;
     throw err;
   }
 
-  await userService.signUp(email, password, userName, mobile);
+  await userService.signUp(email, password, username, mobile);
   res.status(201).json({ message: "SIGNUP_SUCCESS" });
 });
 
