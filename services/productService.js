@@ -8,7 +8,19 @@ const getProductDetail = async (productId) => {
     return product;
 };
 
+
+// 리뷰
+const postProductReview = async (title, content, photo) => {
+
+    const review = await productDao.review(title, content, photo)
+
+    return review
+}
+
+
+
 module.exports = {
-    getProductDetail
+    getProductDetail,
+    postProductReview
 };
 

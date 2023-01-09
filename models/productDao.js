@@ -34,6 +34,27 @@ const product = async ( productId ) => {
   };
 };
 
+// 리뷰
+const review = async ( title, content, photo ) => {
+  try {
+    return await myDataSource.query(
+      `
+      INSERT INTO reviews(
+        title,
+        content,
+        photo
+      ) VALUES (?, ?, ?);
+      `, [title, content, photo]
+    );
+  } catch(err) {
+    const error = new Error("INVALID_DATA_review");
+    console.log(err);
+    error.statusCode = 400;
+    throw error;
+  };
+};
+
 module.exports = {
-  product
+  product,
+  review
 };

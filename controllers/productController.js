@@ -19,6 +19,21 @@ const getProductDetail = asyncErrorHandler( async (req, res) => {
     }
 });
 
+// 리뷰
+const postProductReview = asyncErrorHandler( async (req, res) => {
+    const { title, content, photo } = req.body;
+
+    if( !title ) {
+        const err = new Error("NOT_TITLE");
+        err.statusCode = 400;
+        throw err;
+    }
+
+    await productService.postProductReview( title, content, photo);
+    res.status(201).json({ message : "POST_REVIEW!!" });
+});
+
 module.exports = {
-    getProductDetail
+    getProductDetail,
+    postProductReview
 };
