@@ -7,7 +7,7 @@ const saltRounds = 12;
 const secretKey = process.env.SECRET_KEY; // (3)
 
 // 1. 회원가입
-const signUp = async (email, password, name, mobile) => {
+const signUp = async (email, password, username, mobile) => {
   // 이미 가입된 사용자인지 확인 (메일주소가 DB에 이미 존재하는지 확인)
   const userData = await userDao.getUserData(email);
 
@@ -33,7 +33,7 @@ const signUp = async (email, password, name, mobile) => {
   const createUser = await userDao.createUser(
     email,
     hashedPassword,
-    name,
+    username,
     mobile
   );
 

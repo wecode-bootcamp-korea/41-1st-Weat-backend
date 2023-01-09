@@ -1,6 +1,6 @@
-require("dotenv").config();
+const productDao = require('../models/productDao');
 
-const productDao = require("../models/productDao");
+require("dotenv").config();
 
 const productList = async (
   best,
@@ -19,7 +19,15 @@ const productList = async (
     filter_option
   );
 };
+// 상세 페이지 & 옵션
+const getProductDetail = async (productId) => {
+    
+  const product = await productDao.product( productId )
+
+  return product;
+};
 
 module.exports = {
   productList,
+  getProductDetail
 };

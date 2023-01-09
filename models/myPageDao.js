@@ -5,7 +5,7 @@ const userInfo = async (userId) => {
   try {
     return await myDataSource.query(
       `SELECT 
-      name AS userName, 
+      username, 
       level,
       point,
       (SELECT COUNT(id) FROM orders WHERE orders.user_id = ?) AS orderCount,

@@ -10,9 +10,7 @@ const router = express.Router();
 router.get("/userinfo", validateToken, myPageController.userInfo);
 
 // 2. 주문내역 (cart 모듈에 구현한 주문/결제 조회 API 호출)
-
-// 3. 적립금내역 (이전 사용내역까지?)
-// 간단히 구현하려면 orders 테이블을 조회하여 total_price 만 가져와서 뿌려도 됨.
+// 추후 구현 담당 : 최민주
 
 module.exports = {
   router,

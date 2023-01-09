@@ -1,7 +1,11 @@
 const express = require("express");
-const productController = require("../controllers/productController");
+const productController =  require("../controllers/productController");
 
 const router = express.Router();
+
+// 상세 페이지 & 옵션
+router.get("/:productId",productController.getProductDetail);
+router.get("/", productController.productList);
 
 // Best top6 개 제품 데이터를 제공하는 API
 // router.get("/best", productController.productList);
@@ -19,8 +23,8 @@ const router = express.Router();
 // 선택 카테고리 = 1(pork), 2페이지
 // url/products?category=1&page=2
 
-router.get("/", productController.productList);
-
 module.exports = {
-  router,
+    router
 };
+
+
