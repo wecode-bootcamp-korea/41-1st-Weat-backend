@@ -10,7 +10,6 @@ CREATE TABLE carts (
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (product_id) REFERENCES products(id),
   FOREIGN KEY (product_option_id) REFERENCES product_options(id),
-  UNIQUE KEY unique_index (user_id, product_id, product_option_id)
 );
 
 
