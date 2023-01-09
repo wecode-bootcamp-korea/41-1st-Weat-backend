@@ -6,7 +6,7 @@ const userRouter = require("./userRouter");
 
 router.use("/users", userRouter.router);
 
-//상세 페이지, 옵션 라우터
+//상세 페이지, 옵션 라우터, 제품 리스트 관련 라우터
 
 const productRouter = require("./productRouter");
 
