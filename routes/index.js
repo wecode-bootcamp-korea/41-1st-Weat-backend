@@ -5,10 +5,6 @@ const router = express.Router();
 const usersRouter = require("./userRouter");
 // 제품 리스트 관련 라우터
 const productsRouter = require("./productRouter");
-// 장바구니 관련 라우터
-const cartsRouter = require("./cartRouter");
-// 결제 관련 라우터
-const ordersRouter = require("./orderRouter");
 // 마이페이지 라우터
 const myPageRouter = require("./myPageRouter");
 
