@@ -7,6 +7,7 @@ const product = async ( productId ) => {
       ` SELECT
           p.id,
           p.name,
+          p.weight_price,
           p.price,
           p.thumbnail_image,
           p.base_unit,
