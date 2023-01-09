@@ -1,18 +1,37 @@
 const productDao = require('../models/productDao');
 
+require("dotenv").config();
+
+const productList = async (
+  best,
+  category,
+  page,
+  pageNation,
+  filter,
+  filter_option
+) => {
+  return await productDao.productList(
+    best,
+    category,
+    page,
+    pageNation,
+    filter,
+    filter_option
+  );
+};
 // 상세 페이지 & 옵션
 const getProductDetail = async (productId) => {
     
-    const product = await productDao.product( productId )
+  const product = await productDao.product( productId )
 
-    return product;
+  return product;
 };
 
 
 // 리뷰
-const postProductReview = async (title, content, photo) => {
+const getProductReview = async ( reviewId ) => {
 
-    const review = await productDao.review(title, content, photo)
+    const review = await productDao.review( reviewId )
 
     return review
 }
@@ -20,7 +39,7 @@ const postProductReview = async (title, content, photo) => {
 
 
 module.exports = {
-    getProductDetail,
-    postProductReview
+  productList,
+  getProductDetail,
+  getProductReview
 };
-

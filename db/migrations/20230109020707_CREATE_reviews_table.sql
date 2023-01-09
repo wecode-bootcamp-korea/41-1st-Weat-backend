@@ -6,12 +6,12 @@ CREATE TABLE reviews (
     photo VARCHAR(1000) NULL,
     user_id INT NOT NULL,
     product_id INT NOT NULL,
-    order_id INT NOT NULL,
+    order_product_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (product_id) REFERENCES products(id),
-    FOREIGN KEY (order_id) REFERENCES orders(id)
+    FOREIGN KEY (order_product_id) REFERENCES order_products(id)
 )
 
 -- migrate:down
