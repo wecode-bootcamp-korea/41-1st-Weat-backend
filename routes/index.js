@@ -10,8 +10,6 @@ const myPageRouter = require("./myPageRouter");
 
 router.use("/users", usersRouter.router);
 router.use("/products", productsRouter.router);
-router.use("/carts", cartsRouter.router);
-router.use("/orders", ordersRouter.router);
 router.use("/mypage", myPageRouter.router);
 
 module.exports = router;
