@@ -7,7 +7,7 @@ const router = express.Router();
 const { validateToken } = require("../middlewares/auth.js");
 
 // 2. 장바구니 상품 조회
-router.get("/read", validateToken, cartController.readCart);
+router.get("/", validateToken, cartController.readCart);
 
 module.exports = {
   router,

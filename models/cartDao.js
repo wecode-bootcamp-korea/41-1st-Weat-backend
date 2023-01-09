@@ -11,10 +11,11 @@ const readCart = async (userId) => {
           'thumbnail', products.thumbnail_image,
           'productName', products.name,
           'optionName', product_options.name, 
+          'baseUnit', product.base_unit,
           'price', products.price,
           'quantity', carts.quantity
           )
-        ) AS cartList
+        ) AS cartOption
       FROM carts
       INNER JOIN product_options ON product_options.id = carts.product_option_id
       INNER JOIN products ON products.id = carts.product_id
@@ -24,7 +25,7 @@ const readCart = async (userId) => {
     return cartList;
   } catch (err) {
     const error = new Error("DB_SELECT_FAILED");
-    error.statusCode = 500;
+    error.statusCode = 400;
     throw error;
   }
 };
