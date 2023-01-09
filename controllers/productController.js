@@ -24,7 +24,7 @@ const productList = asyncErrorHandler(async (req, res) => {
     filter,
     filter_option
   );
-  return res.status(201).json({ data: productListArray });
+  return res.status(201).json(productListArray);
 });
 
 module.exports = {
