@@ -38,7 +38,17 @@ const productList = async (
       fullQuery.push(orderQuery);
     }
 
-    return await myDataSource.query(fullQuery.join(" "));
+    const [{ categoryId }] = await myDataSource.query(
+      `SELECT COUNT(category_id) AS categoryId FROM products WHERE category_id=?;`,
+      [category]
+    );
+    const productList = await myDataSource.query(fullQuery.join(" "));
+
+    const categoryProductList = {
+      listLengh: parseInt(categoryId),
+      productList: productList,
+    };
+    return categoryProductList;
   } catch (err) {
     console.log(err);
     const error = new Error("DB_SELECT_FAILED");
