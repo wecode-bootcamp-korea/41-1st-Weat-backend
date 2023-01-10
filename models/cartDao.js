@@ -1,6 +1,6 @@
 const { myDataSource } = require("./myDataSource");
 
-// 4. 장바구니 상품 삭제
+// 3. 장바구니 상품 삭제
 const deleteCart = async (cartId) => {
   try {
     await myDataSource.query(

@@ -1,7 +1,7 @@
 const cartService = require("../services/cartService");
 const { asyncErrorHandler } = require("../middlewares/errorHandling");
 
-// 4. 장바구니 상품 삭제
+// 3. 장바구니 상품 삭제
 const deleteCart = asyncErrorHandler(async (req, res) => {
   const { cartId } = req.params;
 
