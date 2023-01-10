@@ -98,14 +98,15 @@ const getProductReview =  async ( productId ) => {
             "user_name", u.username,
             "order_id", op.id,
             "order_quantity", op.quantity,
-            "product_id", p.id 
+            "product_id", p.id,
+            "product_count", p.sold
           )
         ) AS userData
       FROM reviews r
-      LEFT JOIN users u ON u.id = r.id
-      LEFT JOIN products p ON p.id = r.id
-      LEFT JOIN order_products op ON op.id = r.id
-      WHERE r.id = ?
+      LEFT JOIN users u ON r.user_id = u.id
+      LEFT JOIN products p ON r.product_id = p.id
+      LEFT JOIN order_products op ON r.order_product_id = op.id
+      WHERE p.id = ?
       GROUP BY r.id;
       `, [ productId ]
     );
