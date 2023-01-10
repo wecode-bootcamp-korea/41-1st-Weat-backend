@@ -5,11 +5,14 @@ const router = express.Router();
 const usersRouter = require("./userRouter");
 // 제품 리스트 관련 라우터
 const productsRouter = require("./productRouter");
+// 장바구니 관련 라우터
+const cartsRouter = require("./cartRouter");
 // 주문결제 라우터
 const ordersRouter = require("./orderRouter");
 
 router.use("/users", usersRouter.router);
 router.use("/products", productsRouter.router);
 router.use("/orders", ordersRouter.router);
+router.use("/carts", cartsRouter.router);
 
 module.exports = router;
