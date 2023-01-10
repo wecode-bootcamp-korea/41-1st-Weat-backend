@@ -50,7 +50,6 @@ const productList = async (
     };
     return categoryProductList;
   } catch (err) {
-    console.log(err);
     const error = new Error("DB_SELECT_FAILED");
     error.statusCode = 400;
     throw error;
@@ -87,7 +86,6 @@ const product = async (productId) => {
     return result;
   } catch (err) {
     const error = new Error("INVALID_DATA_productId");
-    console.log(err);
     error.statusCode = 400;
     throw error;
   }
