@@ -7,13 +7,13 @@ const router = express.Router();
 const { validateToken } = require("../middlewares/auth.js");
 
 // 1. 장바구니 상품 추가 / 수량 수정 (주문수량 증가/감소)
-router.post("/upsert", validateToken, cartController.upsertCart);
+router.post("/", validateToken, cartController.upsertCart);
 
 // 2. 장바구니 상품 조회
-router.get("/read", validateToken, cartController.readCart);
+router.get("/", validateToken, cartController.readCart);
 
-// 4. 장바구니 상품 삭제
-router.delete("/delete/:cartId", validateToken, cartController.deleteCart);
+// 3. 장바구니 상품 삭제
+router.delete("/:cartId", validateToken, cartController.deleteCart);
 
 module.exports = {
   router,

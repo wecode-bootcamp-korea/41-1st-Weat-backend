@@ -10,8 +10,6 @@ const { validateToken } = require("../middlewares/auth.js");
 router.get("/point", validateToken, orderController.getUserPoint);
 // 주문/결제
 router.post("/", validateToken, orderController.order);
-// 주문내역 조회
-router.get("/read", validateToken, orderController.read);
 
 module.exports = {
   router,

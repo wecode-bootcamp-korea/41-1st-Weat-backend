@@ -7,15 +7,15 @@ const upsertCart = async (userId, productId, productOptionId, quantity) => {
     await myDataSource.query(
       `INSERT INTO 
       carts(user_id, product_id, product_option_id, quantity ) 
-      VALUES (?, ?, ?, ?)
+      VALUES (?, ?, ?, 1)
       ON DUPLICATE KEY UPDATE 
-      quantity = ?;
+      quantity = quantity + ?;
         `,
-      [userId, productId, productOptionId, quantity, quantity]
+      [userId, productId, productOptionId, quantity]
     );
   } catch (err) {
     const error = new Error("DB_SELECT_FAILED");
-    error.statusCode = 500;
+    error.statusCode = 400;
     // 최종 리턴 배열 : [{썸네일, 상품명, 옵션, 수량, 가격}, {}...]
     throw error;
   }
@@ -24,34 +24,28 @@ const upsertCart = async (userId, productId, productOptionId, quantity) => {
 // 2. 장바구니 상품 조회
 const readCart = async (userId) => {
   try {
-    const [cartList] = await myDataSource.query(
-      `SELECT     
-        JSON_ARRAYAGG(
-          JSON_OBJECT( 
-          'cartId', carts.id,
-          'thumbnail', products.thumbnail_image,
-          'productName', products.name,
-          'optionName', product_options.name, 
-          'price', products.price,
-          'quantity', carts.quantity
-          )
-        ) AS cartList
+    return (cartList = await myDataSource.query(
+      `SELECT
+          carts.id AS cartId,
+          products.thumbnail_image AS thumbnail, 
+          products.name AS productName, 
+          product_options.name AS optionName,
+          products.base_unit AS baseUnit, 
+          products.price AS price, 
+          carts.quantity AS quantity
       FROM carts
       INNER JOIN product_options ON product_options.id = carts.product_option_id
       INNER JOIN products ON products.id = carts.product_id
       WHERE carts.user_id = ?;`,
       [userId]
-    );
-    return cartList;
+    ));
   } catch (err) {
-    console.log(err);
     const error = new Error("DB_SELECT_FAILED");
-    error.statusCode = 500;
-    throw error;
+    error.statusCode = 400;
   }
 };
 
-// 4. 장바구니 상품 삭제
+// 3. 장바구니 상품 삭제
 const deleteCart = async (cartId) => {
   try {
     await myDataSource.query(
@@ -60,10 +54,8 @@ const deleteCart = async (cartId) => {
           `
     );
   } catch (err) {
-    console.log(err);
     const error = new Error("DB_DELETE_FAILED");
-    error.statusCode = 500;
-    throw error;
+    error.statusCode = 400;
   }
 };
 
@@ -81,14 +73,13 @@ const getStock = async (productOptionId) => {
     return stock;
   } catch (err) {
     const error = new Error("GET_STOCK_FAILED");
-    error.statusCode = 500;
+    error.statusCode = 400;
     throw error;
   }
 };
 
 module.exports = {
   readCart,
-  upsertCart,
   deleteCart,
   getStock,
 };

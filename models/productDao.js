@@ -10,7 +10,7 @@ const productList = async (
 ) => {
   try {
     const fullQuery = [];
-    const defaultQuery = `SELECT id, thumbnail_image, name, price, base_unit FROM products`;
+    const defaultQuery = `SELECT id, thumbnail_image, name, price, base_unit, weight_price FROM products`;
     fullQuery.push(defaultQuery);
 
     // 메인페이지에 노출할 판매량 상위 제품을 DB에서 찾아 배열에 담아 리턴
@@ -28,7 +28,7 @@ const productList = async (
       // category 또는 page 값이 없으면 기본값 1 할당
       if (!category) category = 1;
       if (!page) page = 1;
-      if (!pageNation) pageNation = 9;
+      if (!pageNation) pageNation = 6;
       if (!filter) filter = "sold";
       if (!filter_option) filter_option = "DESC";
 
@@ -38,9 +38,18 @@ const productList = async (
       fullQuery.push(orderQuery);
     }
 
-    return await myDataSource.query(fullQuery.join(" "));
+    const [{ categoryId }] = await myDataSource.query(
+      `SELECT COUNT(category_id) AS categoryId FROM products WHERE category_id=?;`,
+      [category]
+    );
+    const productList = await myDataSource.query(fullQuery.join(" "));
+
+    const categoryProductList = {
+      listLength: parseInt(categoryId),
+      productList: productList,
+    };
+    return categoryProductList;
   } catch (err) {
-    console.log(err);
     const error = new Error("DB_SELECT_FAILED");
     error.statusCode = 400;
     throw error;
@@ -48,7 +57,7 @@ const productList = async (
 };
 
 // 상세 페이지 & 옵션
-const product = async ( productId ) => {
+const product = async (productId) => {
   try {
     const result = await myDataSource.query(
       ` SELECT
@@ -71,18 +80,19 @@ const product = async ( productId ) => {
         LEFT JOIN product_options po ON po.product_id = p.id
         WHERE p.id = ?
         GROUP BY p.id;
-      `, [ productId ]
+      `,
+      [productId]
     );
-    return result
+    return result;
   } catch (err) {
     const error = new Error("INVALID_DATA_productId");
     console.log(err);
     error.statusCode = 400;
     throw error;
-  };
+  }
 };
 
 module.exports = {
   productList,
-  product
+  product,
 };

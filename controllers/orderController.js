@@ -20,14 +20,7 @@ const order = asyncErrorHandler(async (req, res) => {
   return res.status(201).json({ message: "ORDER_SUCCESS" });
 });
 
-// 주문내역 조회
-const read = asyncErrorHandler(async (req, res) => {
-  const orderList = await orderService.read(req.userId);
-  return res.status(201).json({ orderList });
-});
-
 module.exports = {
   getUserPoint,
   order,
-  read,
 };
