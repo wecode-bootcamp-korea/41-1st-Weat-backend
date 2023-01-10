@@ -40,6 +40,6 @@ const deleteCart = async (cartId) => {
 };
 
 module.exports = {
-  deleteCart,
   readCart,
+  deleteCart,
 };
