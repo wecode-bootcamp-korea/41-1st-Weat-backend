@@ -45,7 +45,7 @@ const productList = async (
     const productList = await myDataSource.query(fullQuery.join(" "));
 
     const categoryProductList = {
-      listLengh: parseInt(categoryId),
+      listLength: parseInt(categoryId),
       productList: productList,
     };
     return categoryProductList;
