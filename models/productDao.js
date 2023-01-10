@@ -28,7 +28,7 @@ const productList = async (
       // category 또는 page 값이 없으면 기본값 1 할당
       if (!category) category = 1;
       if (!page) page = 1;
-      if (!pageNation) pageNation = 9;
+      if (!pageNation) pageNation = 6;
       if (!filter) filter = "sold";
       if (!filter_option) filter_option = "DESC";
 
@@ -50,7 +50,6 @@ const productList = async (
     };
     return categoryProductList;
   } catch (err) {
-    console.log(err);
     const error = new Error("DB_SELECT_FAILED");
     error.statusCode = 400;
     throw error;
