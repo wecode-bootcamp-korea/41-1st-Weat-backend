@@ -3,7 +3,7 @@ const { myDataSource } = require("./myDataSource");
 // 주문/결제 내역 조회
 const read = async (userId) => {
   try {
-    const orderList = await myDataSource.query(
+    return await myDataSource.query(
       `SELECT
         orders.id AS orderId,
         JSON_ARRAYAGG(
@@ -24,7 +24,6 @@ const read = async (userId) => {
         ORDER BY orders.id DESC;`,
       [userId]
     );
-    return orderList;
   } catch (err) {
     const error = new Error("INQUIRE_ORDER_RESULT_DB_FAILED");
     error.statusCode = 500;
