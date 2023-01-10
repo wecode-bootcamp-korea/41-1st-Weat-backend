@@ -71,7 +71,6 @@ const order = async (userId, toName, toMobile, toAddress) => {
     );
 
     // 3. 장바구니 -> 주문정보 테이블로 상품정보 복사
-    //!!!!!@query 쿼리 짜기!!!!!
     const cartLists = await queryRunner.query(
       `SELECT
         product_id AS productId,
@@ -93,16 +92,26 @@ const order = async (userId, toName, toMobile, toAddress) => {
     }
 
     // 4. 구매 금액만큼 포인트 차감
+    // 4-1. 배송비 조회
+    const [{ deliveryCharge }] = await queryRunner.query(
+      `SELECT 
+        delivery_charge AS deliveryCharge
+      FROM deliveries
+			WHERE order_id = ?;
+    `,
+      [orderId]
+    );
+
+    // 4-2. 상품 총 가격과 배송비를 포인트에서 차감한다.
     await queryRunner.query(
       `UPDATE users
-      SET point = point - ?
+      SET point = point - ? - ?
 			WHERE id = ?;
     `,
-      [totalPrice, userId]
+      [totalPrice, deliveryCharge, userId]
     );
 
     // 5. 각 제품의 구매한 수량만큼 재고 차감
-    //!!!!!@query 쿼리 짜기!!!!!
     // 5-1. 제품 재고 차감
     for (list of cartLists) {
       await queryRunner.query(
@@ -125,7 +134,6 @@ const order = async (userId, toName, toMobile, toAddress) => {
     }
 
     // 6. 각 제품의 구매한 수량만큼 판매량 증가
-    //!!!!!@query 쿼리 짜기!!!!!
     for (list of cartLists) {
       await queryRunner.query(
         `UPDATE products
@@ -144,6 +152,7 @@ const order = async (userId, toName, toMobile, toAddress) => {
     );
 
     await queryRunner.commitTransaction();
+    return orderId;
   } catch (err) {
     await queryRunner.rollbackTransaction();
     const error = new Error("ORDER_FAILED");
@@ -155,29 +164,65 @@ const order = async (userId, toName, toMobile, toAddress) => {
 };
 
 // 8. 완료된 주문 조회
-const getOrderResult = async (userId) => {
+const getOrderResult = async (userId, orderId) => {
   try {
-    const orderResult = await myDataSource.query(
+    const [deliveryObj] = await myDataSource.query(
       `SELECT
-        orders.id AS orderId,
-        JSON_ARRAYAGG(
-          JSON_OBJECT(
-            'thumbnail', products.thumbnail_image,
-            'productName', products.name,
-            'optionName', product_options.name,
-            'price', products.price,
-            'quantity', order_products.quantity
-          )
-        )AS List
-        FROM orders
-        INNER JOIN order_products ON order_products.order_id = orders.id
-        INNER JOIN products ON products.id = order_products.product_id
-        INNER JOIN product_options ON product_options.id = order_products.product_option_id
-        WHERE orders.user_id = ?
-        GROUP BY orders.id
-        ORDER BY orders.id DESC;`,
+        from_name, 
+        from_mobile, 
+        from_email, 
+        to_name, 
+        to_mobile, 
+        to_address,
+        delivery_charge
+      FROM deliveries
+      WHERE order_id = ?`,
+      [orderId]
+    );
+
+    const productOrderList = await myDataSource.query(
+      // `SELECT
+      // JSON_ARRAYAGG(
+      // JSON_OBJECT(
+      //   'thumbnail', products.thumbnail_image,
+      //   'productName', products.name,
+      //   'optionName', product_options.name,
+      //   'price', products.price,
+      //   'quantity', order_products.quantity
+      // )) AS productOrderList
+      // FROM orders
+      // INNER JOIN order_products ON order_products.order_id = orders.id
+      // INNER JOIN products ON products.id = order_products.product_id
+      // INNER JOIN product_options ON product_options.id = order_products.product_option_id
+      // WHERE orders.id = ?;`,
+      // [orderId]
+      `SELECT
+        products.thumbnail_image AS thumbnail, 
+        products.name AS productName, 
+        product_options.name AS optionName,
+        products.price AS price, 
+        order_products.quantity AS quantity
+      FROM orders
+      INNER JOIN order_products ON order_products.order_id = orders.id
+      INNER JOIN products ON products.id = order_products.product_id
+      INNER JOIN product_options ON product_options.id = order_products.product_option_id
+      WHERE orders.id = ?;`,
+      [orderId]
+    );
+
+    const [{ point }] = await myDataSource.query(
+      `SELECT point
+      FROM users
+      WHERE id = ?`,
       [userId]
     );
+
+    const orderResult = {
+      deliveryObj: deliveryObj,
+      productOrderList: productOrderList,
+      point: point,
+    };
+
     return orderResult;
   } catch (err) {
     const error = new Error("GET_ORDER_RESULT_FAILED");

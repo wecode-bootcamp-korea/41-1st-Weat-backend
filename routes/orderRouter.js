@@ -13,7 +13,7 @@ router.get("/", validateToken, orderController.getUserInfo);
 router.post("/", validateToken, orderController.order);
 
 // 3. 주문 완료 화면
-router.get("/result", validateToken, orderController.getOrderResult);
+router.get("/:orderId", validateToken, orderController.getOrderResult);
 
 module.exports = {
   router,

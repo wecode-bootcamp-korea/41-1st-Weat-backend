@@ -7,7 +7,7 @@ const getUserInfo = asyncErrorHandler(async (req, res) => {
   return res.status(200).json(userInfo);
 });
 
-// (2) 주문/결제 && 주문/결과 리턴
+// (2) 주문/결제 && 주문번호(id) 리턴
 const order = asyncErrorHandler(async (req, res) => {
   const { toName, toMobile, toAddress } = req.body;
 
@@ -16,18 +16,26 @@ const order = asyncErrorHandler(async (req, res) => {
     err.statusCode = 400;
     throw err;
   }
-  const orderResult = await orderService.order(
+  const orderId = await orderService.order(
     req.userId,
     toName,
     toMobile,
     toAddress
   );
-  return res.status(201).json({ message: "ORDER_SUCCESS" });
+  return res.status(201).json({ orderId: orderId });
 });
 
 // (3) 완료된 주문 조회
 const getOrderResult = asyncErrorHandler(async (req, res) => {
-  return await orderService.getOrderResult(req.userId);
+  const { orderId } = req.params;
+
+  if (!orderId) {
+    const err = new Error("KEY_ERROR");
+    err.statusCode = 400;
+    throw err;
+  }
+  const orderResult = await orderService.getOrderResult(req.userId, orderId);
+  return res.status(201).json(orderResult);
 });
 
 module.exports = {

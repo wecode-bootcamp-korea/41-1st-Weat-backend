@@ -8,11 +8,11 @@ const getUserInfo = async (userId) => {
 
 // (2) 주문/결제
 const order = async (userId, toName, toMobile, toAddress) => {
-  await orderDao.order(userId, toName, toMobile, toAddress);
+  return await orderDao.order(userId, toName, toMobile, toAddress);
 };
 // (3) 완료된 주문 조회
-const getOrderResult = async (userId) => {
-  return await orderDao.getOrderResult(userId);
+const getOrderResult = async (userId, orderId) => {
+  return await orderDao.getOrderResult(userId, orderId);
 };
 
 module.exports = {
