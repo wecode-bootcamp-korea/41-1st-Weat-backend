@@ -1,7 +1,7 @@
 require("dotenv").config();
 const orderDao = require("../models/orderDao");
 
-const read = async (userId) => {
+const readOrderList = async (userId) => {
   return await orderDao.read(userId);
 };
 
