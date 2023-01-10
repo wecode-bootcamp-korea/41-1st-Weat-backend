@@ -83,44 +83,65 @@ const product = async ( productId ) => {
 };
 
 // 리뷰
-const review =  async ( reviewId ) => {
+const getProductReview =  async ( productId ) => {
   try {
     const result = await myDataSource.query(
       `
       SELECT
-      r.id,
-      r.title,
-      r.content,
-      r.photo,
-      JSON_ARRAYAGG(
-        JSON_OBJECT(
-          "user_id", u.id,
-          "user_name", u.username,
-          "product_id", p.id,
-          "product_count", p.sold,
-          "order_id", op.id,
-          "order_quantity", op.quantity
-        )
-      ) AS userData
+        r.id,
+        r.title,
+        r.content,
+        r.photo,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            "user_id", u.id,
+            "user_name", u.username,
+            "order_id", op.id,
+            "order_quantity", op.quantity,
+            "product_id", p.id 
+          )
+        ) AS userData
       FROM reviews r
       LEFT JOIN users u ON u.id = r.id
       LEFT JOIN products p ON p.id = r.id
       LEFT JOIN order_products op ON op.id = r.id
       WHERE r.id = ?
       GROUP BY r.id;
-      `, [ reviewId ]
+      `, [ productId ]
     );
     return result
   } catch (err) {
-    const error = new Error("INVALID_DATA_reviewId");
+    const error = new Error("INVALID_DATA_reviewData");
     console.log(err);
     error.statusCode = 400;
     throw error;
   };
 };
 
+// 리뷰의 제품 ID 값 불러오기
+const getproductId = async ( productId ) => {
+  try {
+    const result = await myDataSource.query(
+      `
+      SELECT
+      p.id
+      FROM products p
+      WHERE p.id = ?
+      `, [ productId ]
+    );
+    return result
+  } catch (err) {
+    const error = new Error("INVALID_DATA_productidReview");
+    console.log(err);
+    error.statusCode = 400;
+    throw error;
+  };
+};
+
+
 module.exports = {
   productList,
   product,
-  review
+  getProductReview,
+  getproductId
 };

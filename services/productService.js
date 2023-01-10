@@ -29,14 +29,20 @@ const getProductDetail = async (productId) => {
 
 
 // 리뷰
-const getProductReview = async ( reviewId ) => {
+const getProductReview = async ( productId ) => {
 
-    const review = await productDao.review( reviewId )
+  const productData = await productDao.getproductId( productId );
 
-    return review
+  if ( !productData ) {
+    const err = new Error("NOT_ProductDataId");
+    err.statusCode = 409;
+    throw err;
+  }
+
+  const review = await productDao.getProductReview( productId )
+
+  return review
 }
-
-
 
 module.exports = {
   productList,

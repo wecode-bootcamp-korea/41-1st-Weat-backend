@@ -24,7 +24,7 @@ router.get("/", productController.productList);
 // url/products?category=1&page=2
 
 // 리뷰
-router.get("/review/:reviewId", productController.getProductReview);
+router.get("/:productId/reviews", productController.getProductReview);
 
 module.exports = {
     router
