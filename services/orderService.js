@@ -1,15 +1,22 @@
 require("dotenv").config();
 const orderDao = require("../models/orderDao");
 
-const getUserPoint = async (userId) => {
-  return await orderDao.getUserPoint(userId);
+// (1) 사용자 정보 리턴 (BE -> FE)
+const getUserInfo = async (userId) => {
+  return await orderDao.getUserInfo(userId);
 };
 
-const order = async (userId, ordersObj) => {
-  await orderDao.order(userId, ordersObj);
+// (2) 주문/결제
+const order = async (userId, toName, toMobile, toAddress) => {
+  await orderDao.order(userId, toName, toMobile, toAddress);
+};
+// (3) 완료된 주문 조회
+const getOrderResult = async (userId) => {
+  return await orderDao.getOrderResult(userId);
 };
 
 module.exports = {
-  getUserPoint,
+  getUserInfo,
   order,
+  getOrderResult,
 };

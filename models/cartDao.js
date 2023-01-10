@@ -79,6 +79,7 @@ const getStock = async (productOptionId) => {
 };
 
 module.exports = {
+  upsertCart,
   readCart,
   deleteCart,
   getStock,
