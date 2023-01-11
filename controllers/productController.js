@@ -43,7 +43,22 @@ const getProductDetail = asyncErrorHandler(async (req, res) => {
   }
 });
 
+// 리뷰
+const getProductReview = asyncErrorHandler( async (req, res) => {
+    const { productId } = req.params;
+    try {
+      const reviews = await productService.getProductReview(productId);
+
+      return res.status(200).json({ data : reviews });
+    } catch (error) {
+        console.log(error)
+        error.statusCode = 500;
+        throw error;
+    }
+});
+
 module.exports = {
   productList,
   getProductDetail,
+  getProductReview
 };

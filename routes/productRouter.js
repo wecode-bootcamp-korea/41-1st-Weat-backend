@@ -23,6 +23,9 @@ router.get("/", productController.productList);
 // 선택 카테고리 = 1(pork), 2페이지
 // url/products?category=1&page=2
 
+// 리뷰
+router.get("/:productId/reviews", productController.getProductReview);
+
 module.exports = {
   router,
 };
