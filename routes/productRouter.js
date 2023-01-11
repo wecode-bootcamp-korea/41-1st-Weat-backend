@@ -1,10 +1,10 @@
 const express = require("express");
-const productController =  require("../controllers/productController");
+const productController = require("../controllers/productController");
 
 const router = express.Router();
 
 // 상세 페이지 & 옵션
-router.get("/:productId",productController.getProductDetail);
+router.get("/:productId", productController.getProductDetail);
 router.get("/", productController.productList);
 
 // Best top6 개 제품 데이터를 제공하는 API
@@ -27,7 +27,5 @@ router.get("/", productController.productList);
 router.get("/:productId/reviews", productController.getProductReview);
 
 module.exports = {
-    router
+  router,
 };
-
-
