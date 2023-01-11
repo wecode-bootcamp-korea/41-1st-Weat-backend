@@ -78,7 +78,13 @@ const login = async (email, password) => {
   return jwtToken;
 };
 
+// 3. 사용자 정보 리턴 (BE -> FE)
+const getUserInfo = async (userId) => {
+  return await userDao.getUserInfo(userId);
+};
+
 module.exports = {
   signUp,
   login,
+  getUserInfo,
 };

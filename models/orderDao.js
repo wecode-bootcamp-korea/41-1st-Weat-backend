@@ -1,25 +1,7 @@
 const { myDataSource } = require("./myDataSource");
 const queryRunner = myDataSource.createQueryRunner();
 
-// (1). 사용자 정보 리턴
-const getUserInfo = async (userId) => {
-  try {
-    return await myDataSource.query(
-      `SELECT
-        username, email, mobile, point
-        FROM users
-        WHERE id = ?;`,
-      [userId]
-    );
-  } catch (err) {
-    const error = new Error("GET_USER_INFO_FAILED");
-    error.statusCode = 400;
-    throw error;
-  }
-};
-
-//////////////////////////////////////////////////////////
-// (2). 주문/결제 함수
+// 주문/결제 함수
 const order = async (userId, toName, toMobile, toAddress) => {
   await queryRunner.connect();
   await queryRunner.startTransaction();
@@ -163,7 +145,7 @@ const order = async (userId, toName, toMobile, toAddress) => {
   }
 };
 
-// 8. 완료된 주문 조회
+// 완료된 주문 조회
 const getOrderResult = async (userId, orderId) => {
   try {
     const [deliveryObj] = await myDataSource.query(
@@ -217,7 +199,6 @@ const getOrderResult = async (userId, orderId) => {
 };
 
 module.exports = {
-  getUserInfo,
   order,
   getOrderResult,
 };

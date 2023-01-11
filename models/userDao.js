@@ -39,7 +39,25 @@ const getUserData = async (email) => {
   }
 };
 
+// 3. 사용자 정보 리턴
+const getUserInfo = async (userId) => {
+  try {
+    return await myDataSource.query(
+      `SELECT
+        username, email, mobile, point
+        FROM users
+        WHERE id = ?;`,
+      [userId]
+    );
+  } catch (err) {
+    const error = new Error("GET_USER_INFO_FAILED");
+    error.statusCode = 400;
+    throw error;
+  }
+};
+
 module.exports = {
   createUser,
   getUserData,
+  getUserInfo,
 };
