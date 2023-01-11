@@ -28,7 +28,9 @@ const readCart = async (userId) => {
       `SELECT
           carts.id AS cartId,
           products.thumbnail_image AS thumbnail, 
+          products.id AS productId,
           products.name AS productName, 
+          product_options.id AS optionId,
           product_options.name AS optionName,
           products.base_unit AS baseUnit, 
           products.price AS price, 
