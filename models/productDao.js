@@ -10,7 +10,22 @@ const productList = async (
 ) => {
   try {
     const fullQuery = [];
-    const defaultQuery = `SELECT id, thumbnail_image, name, price, base_unit, weight_price FROM products`;
+    const defaultQuery = `SELECT 
+      products.id, 
+      products.thumbnail_image, 
+      products.name, 
+      products.price, 
+      products.base_unit, 
+      products.weight_price, 
+    JSON_ARRAYAGG(
+    JSON_OBJECT(
+      "option_id", product_options.id,
+      "option_name", product_options.name,
+      "option_stock", product_options.stock
+      )
+    ) AS options
+    FROM products
+    INNER JOIN product_options ON product_options.product_id = products.id`;
     fullQuery.push(defaultQuery);
 
     // 메인페이지에 노출할 판매량 상위 제품을 DB에서 찾아 배열에 담아 리턴
@@ -32,7 +47,7 @@ const productList = async (
       if (!filter) filter = "sold";
       if (!filter_option) filter_option = "DESC";
 
-      const orderQuery = `WHERE category_id = ${category} ORDER BY ${filter} ${filter_option} LIMIT ${
+      const orderQuery = `WHERE category_id = ${category} GROUP BY products.id ORDER BY ${filter} ${filter_option} LIMIT ${
         (page - 1) * pageNation
       }, ${pageNation}`;
       fullQuery.push(orderQuery);
@@ -93,7 +108,7 @@ const product = async (productId) => {
 };
 
 // 리뷰
-const getProductReview =  async ( productId ) => {
+const getProductReview = async (productId) => {
   try {
     const result = await myDataSource.query(
       `
@@ -118,19 +133,20 @@ const getProductReview =  async ( productId ) => {
       LEFT JOIN order_products op ON r.order_product_id = op.id
       WHERE r.product_id = ?
       GROUP BY r.id;
-      `, [ productId ]
+      `,
+      [productId]
     );
-    return result
+    return result;
   } catch (err) {
     const error = new Error("INVALID_DATA_reviewData");
     console.log(err);
     error.statusCode = 400;
     throw error;
-  };
+  }
 };
 
 // 리뷰의 제품 ID 값 불러오기
-const getproductId = async ( productId ) => {
+const getproductId = async (productId) => {
   try {
     const result = await myDataSource.query(
       `
@@ -138,21 +154,21 @@ const getproductId = async ( productId ) => {
       p.id
       FROM products p
       WHERE p.id = ?
-      `, [ productId ]
+      `,
+      [productId]
     );
-    return result
+    return result;
   } catch (err) {
     const error = new Error("INVALID_DATA_productidReview");
     console.log(err);
     error.statusCode = 400;
     throw error;
-  };
+  }
 };
-
 
 module.exports = {
   productList,
   product,
   getProductReview,
-  getproductId
+  getproductId,
 };
