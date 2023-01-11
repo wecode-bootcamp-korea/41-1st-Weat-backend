@@ -32,7 +32,7 @@ const productList = async (
     // 리턴 형태 : [{썸네일 : ~, 제품명 : ~, 가격 : ~, 기준무게/부피/갯수 : ~ }...]
     // 상위 6개 제품만 리턴
     if (best === "") {
-      const orderQuery = `ORDER BY sold DESC LIMIT 6`;
+      const orderQuery = `GROUP BY products.id ORDER BY sold DESC LIMIT 6`;
       fullQuery.push(orderQuery);
     }
     // 카테고리 페이지에 노출할 제품을 DB에서 찾아 배열에 담아 리턴
