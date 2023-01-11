@@ -93,7 +93,7 @@ const product = async (productId) => {
 };
 
 // 리뷰
-const getProductReview =  async ( productId ) => {
+const getProductReview = async (productId) => {
   try {
     const result = await myDataSource.query(
       `
@@ -118,19 +118,20 @@ const getProductReview =  async ( productId ) => {
       LEFT JOIN order_products op ON r.order_product_id = op.id
       WHERE p.id = ?
       GROUP BY r.id;
-      `, [ productId ]
+      `,
+      [productId]
     );
-    return result
+    return result;
   } catch (err) {
     const error = new Error("INVALID_DATA_reviewData");
     console.log(err);
     error.statusCode = 400;
     throw error;
-  };
+  }
 };
 
 // 리뷰의 제품 ID 값 불러오기
-const getproductId = async ( productId ) => {
+const getproductId = async (productId) => {
   try {
     const result = await myDataSource.query(
       `
@@ -138,25 +139,21 @@ const getproductId = async ( productId ) => {
       p.id
       FROM products p
       WHERE p.id = ?
-      `, [ productId ]
+      `,
+      [productId]
     );
-    return result
+    return result;
   } catch (err) {
     const error = new Error("INVALID_DATA_productidReview");
     console.log(err);
     error.statusCode = 400;
     throw error;
-  };
+  }
 };
-
 
 module.exports = {
   productList,
   product,
-<<<<<<< HEAD
-};
-=======
   getProductReview,
-  getproductId
+  getproductId,
 };
->>>>>>> origin/feature/sangwoo-Review

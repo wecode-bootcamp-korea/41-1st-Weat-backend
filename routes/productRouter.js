@@ -7,8 +7,6 @@ const router = express.Router();
 router.get("/:productId", productController.getProductDetail);
 router.get("/", productController.productList);
 
-<<<<<<< HEAD
-=======
 // Best top6 개 제품 데이터를 제공하는 API
 // router.get("/best", productController.productList);
 
@@ -28,7 +26,6 @@ router.get("/", productController.productList);
 // 리뷰
 router.get("/:productId/reviews", productController.getProductReview);
 
->>>>>>> origin/feature/sangwoo-Review
 module.exports = {
   router,
 };
