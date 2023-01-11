@@ -43,7 +43,30 @@ const getProductDetail = asyncErrorHandler(async (req, res) => {
   }
 });
 
+// 리뷰
+const getProductReview = asyncErrorHandler( async (req, res) => {
+    const { productId } = req.params;
+    try {
+      const product = await productService.getProductReview(productId);
+
+      if ( !productId[0] ) {
+        throw new Error( "NOT_PRODUCTREVIEWID" )
+      };
+
+      return res.status(200).json({ data : product });
+    } catch (error) {
+        console.log(error)
+        error.statusCode = 500;
+        throw error;
+    }
+});
+
 module.exports = {
   productList,
   getProductDetail,
+<<<<<<< HEAD
 };
+=======
+  getProductReview
+};
+>>>>>>> origin/feature/sangwoo-Review
