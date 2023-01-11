@@ -35,13 +35,13 @@ const getProductReview = async ( productId ) => {
 
   if ( !productData ) {
     const err = new Error("NOT_ProductDataId");
-    err.statusCode = 409;
+    err.statusCode = 404;
     throw err;
   }
 
-  const review = await productDao.getProductReview( productId )
+  const reviews = await productDao.getProductReview( productId )
 
-  return review
+  return reviews
 }
 
 module.exports = {

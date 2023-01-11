@@ -47,13 +47,9 @@ const getProductDetail = asyncErrorHandler(async (req, res) => {
 const getProductReview = asyncErrorHandler( async (req, res) => {
     const { productId } = req.params;
     try {
-      const product = await productService.getProductReview(productId);
+      const reviews = await productService.getProductReview(productId);
 
-      if ( !productId[0] ) {
-        throw new Error( "NOT_PRODUCTREVIEWID" )
-      };
-
-      return res.status(200).json({ data : product });
+      return res.status(200).json({ data : reviews });
     } catch (error) {
         console.log(error)
         error.statusCode = 500;
