@@ -22,13 +22,17 @@ const upsertCart = async (userId, productId, productOptionId, quantity) => {
 };
 
 // 2. 장바구니 상품 조회
+// @최민주
+// product.id, product_options.id 도 FE 로 전달
 const readCart = async (userId) => {
   try {
     return (cartList = await myDataSource.query(
       `SELECT
           carts.id AS cartId,
           products.thumbnail_image AS thumbnail, 
+          products.id AS productId,
           products.name AS productName, 
+          product_options.id AS optionId,
           product_options.name AS optionName,
           products.base_unit AS baseUnit, 
           products.price AS price, 

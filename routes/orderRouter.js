@@ -7,6 +7,9 @@ const router = express.Router();
 const { validateToken } = require("../middlewares/auth.js");
 
 // 1. DB → FE (객체 하나로 묶어서.)
+// @최민주
+// userRouter 로 이동
+// userInfo // 이렇게 api 호출
 router.get("/", validateToken, orderController.getUserInfo);
 
 // 2. 주문/결제
