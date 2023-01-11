@@ -7,11 +7,11 @@ const upsertCart = async (userId, productId, productOptionId, quantity) => {
     await myDataSource.query(
       `INSERT INTO 
       carts(user_id, product_id, product_option_id, quantity ) 
-      VALUES (?, ?, ?, 1)
+      VALUES (?, ?, ?, ?)
       ON DUPLICATE KEY UPDATE 
       quantity = quantity + ?;
         `,
-      [userId, productId, productOptionId, quantity]
+      [userId, productId, productOptionId, quantity, quantity]
     );
   } catch (err) {
     const error = new Error("DB_SELECT_FAILED");
