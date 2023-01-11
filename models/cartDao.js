@@ -7,11 +7,11 @@ const upsertCart = async (userId, productId, productOptionId, quantity) => {
     await myDataSource.query(
       `INSERT INTO 
       carts(user_id, product_id, product_option_id, quantity ) 
-      VALUES (?, ?, ?, 1)
+      VALUES (?, ?, ?, ?)
       ON DUPLICATE KEY UPDATE 
       quantity = quantity + ?;
         `,
-      [userId, productId, productOptionId, quantity]
+      [userId, productId, productOptionId, quantity, quantity]
     );
   } catch (err) {
     const error = new Error("DB_SELECT_FAILED");
@@ -28,7 +28,9 @@ const readCart = async (userId) => {
       `SELECT
           carts.id AS cartId,
           products.thumbnail_image AS thumbnail, 
+          products.id AS productId,
           products.name AS productName, 
+          product_options.id AS optionId,
           product_options.name AS optionName,
           products.base_unit AS baseUnit, 
           products.price AS price, 
@@ -79,6 +81,7 @@ const getStock = async (productOptionId) => {
 };
 
 module.exports = {
+  upsertCart,
   readCart,
   deleteCart,
   getStock,

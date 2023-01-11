@@ -30,7 +30,14 @@ const login = asyncErrorHandler(async (req, res) => {
   return res.status(201).json({ accessToken: jwtToken });
 });
 
+// 3. 사용자 정보 리턴 (BE -> FE)
+const getUserInfo = asyncErrorHandler(async (req, res) => {
+  const userInfo = await userService.getUserInfo(req.userId);
+  return res.status(200).json(userInfo);
+});
+
 module.exports = {
   signUp,
   login,
+  getUserInfo,
 };

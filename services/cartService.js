@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const cartDao = require("../models/cartDao");
 
 // 1. 장바구니 상품 추가 / 수량 변경
@@ -22,12 +23,12 @@ const readCart = async (userId) => {
 };
 
 // 3. 장바구니 아이템 삭제
-const deleteCart = async (cartId) => {
-  await cartDao.deleteCart(cartId);
+const deleteCart = async (itemId) => {
+  await cartDao.deleteCart(itemId);
 };
 
 module.exports = {
-  deleteCart,
   readCart,
   upsertCart,
+  deleteCart,
 };
