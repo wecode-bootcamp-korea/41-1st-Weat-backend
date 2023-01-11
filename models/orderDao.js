@@ -181,21 +181,6 @@ const getOrderResult = async (userId, orderId) => {
     );
 
     const productOrderList = await myDataSource.query(
-      // `SELECT
-      // JSON_ARRAYAGG(
-      // JSON_OBJECT(
-      //   'thumbnail', products.thumbnail_image,
-      //   'productName', products.name,
-      //   'optionName', product_options.name,
-      //   'price', products.price,
-      //   'quantity', order_products.quantity
-      // )) AS productOrderList
-      // FROM orders
-      // INNER JOIN order_products ON order_products.order_id = orders.id
-      // INNER JOIN products ON products.id = order_products.product_id
-      // INNER JOIN product_options ON product_options.id = order_products.product_option_id
-      // WHERE orders.id = ?;`,
-      // [orderId]
       `SELECT
         products.thumbnail_image AS thumbnail, 
         products.name AS productName, 

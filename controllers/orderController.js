@@ -22,7 +22,7 @@ const order = asyncErrorHandler(async (req, res) => {
     toMobile,
     toAddress
   );
-  return res.status(201).json({ orderId: orderId });
+  return res.status(200).json({ orderId: orderId });
 });
 
 // (3) 완료된 주문 조회
@@ -35,7 +35,7 @@ const getOrderResult = asyncErrorHandler(async (req, res) => {
     throw err;
   }
   const orderResult = await orderService.getOrderResult(req.userId, orderId);
-  return res.status(201).json(orderResult);
+  return res.status(200).json(orderResult);
 });
 
 module.exports = {
