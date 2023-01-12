@@ -167,6 +167,7 @@ const getOrderResult = async (userId, orderId) => {
         products.thumbnail_image AS thumbnail, 
         products.name AS productName, 
         product_options.name AS optionName,
+        products.base_unit AS baseUnit,
         products.price AS price, 
         order_products.quantity AS quantity
       FROM orders
