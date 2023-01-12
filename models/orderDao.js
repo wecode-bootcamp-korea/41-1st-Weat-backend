@@ -137,11 +137,10 @@ const order = async (userId, toName, toMobile, toAddress) => {
     return orderId;
   } catch (err) {
     await queryRunner.rollbackTransaction();
+    await queryRunner.release();
     const error = new Error("ORDER_FAILED");
     error.statusCode = 400;
     throw error;
-  } finally {
-    await queryRunner.release();
   }
 };
 
