@@ -137,11 +137,10 @@ const order = async (userId, toName, toMobile, toAddress) => {
     return orderId;
   } catch (err) {
     await queryRunner.rollbackTransaction();
+    await queryRunner.release();
     const error = new Error("ORDER_FAILED");
     error.statusCode = 400;
     throw error;
-  } finally {
-    await queryRunner.release();
   }
 };
 
@@ -167,6 +166,7 @@ const getOrderResult = async (userId, orderId) => {
         products.thumbnail_image AS thumbnail, 
         products.name AS productName, 
         product_options.name AS optionName,
+        products.base_unit AS baseUnit,
         products.price AS price, 
         order_products.quantity AS quantity
       FROM orders
