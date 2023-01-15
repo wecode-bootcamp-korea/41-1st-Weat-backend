@@ -79,5 +79,5 @@ Common
 >- 💡 We need to use ......
 
 - Our DB are in each member's local...
->- Can't share same DB & can't test our BE module in the same environment
+>- Could not share same DB & Could not test our module in the same environment
 >- 💡 Let's try AWS RDS or S3 next time!
