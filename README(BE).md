@@ -75,9 +75,18 @@ Common
 <br>
 
 ## 🤔 Future Works
-- JWT is too weak...
->- 💡 We need to use ......
+### JWT is too weak...
+- Security risk can occur
+>- 💡 We can use MFA / Refresh token
 
-- Our DB are in each member's local...
->- Could not share same DB & Could not test our module in the same environment
+### Our DB are in each member's local...
+- Could not share same DB & Could not test our module in the same environment
 >- 💡 Let's try AWS RDS or S3 next time!
+
+### Inefficient FE-BE connection test
+- Can run only one server at the same time
+>- 💡 Change port number
+- We had to wait until our supervisor feedbacks to the pull request and merges to the main branch
+- There are many sub branches. So when we had some module test, we had to checkout sub branches often
+>- Make test branch & merge all sub branches to the test branch
+
