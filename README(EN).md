@@ -1,7 +1,7 @@
 # 🥩 Weat
 Hi, we are team 'Weat'! 🤗
 - 'Weat" is the first project team name and our service name consisting of students from the 41st Wecode Coding Boot Camp.
-- We clone-coded the '[Jeongyookgak](https://www.jeongyookgak.com/index)' site.'[정육각]'
+- We clone-coded the '[Jeongyookgak](https://www.jeongyookgak.com/index)' site.
     - 'Jeongyookgak' is a service launched by a Korean startup that sells very fresh groceries and mainly sells meat.
 
 🖥️ [Demo video](https://youtu.be/Es1Xk93CRZo)
