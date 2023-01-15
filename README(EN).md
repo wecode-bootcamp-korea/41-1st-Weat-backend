@@ -1,4 +1,7 @@
 # 🥩 Weat
+
+<img src="https://user-images.githubusercontent.com/53294075/212554426-9855b21d-46aa-4d4f-8984-b56b9a770bca.png" width = "200px">
+
 Hi, we are team 'Weat'! 🤗
 - 'Weat" is the first project team name and our service name consisting of students from the 41st Wecode Coding Boot Camp.
 - We clone-coded the '[Jeongyookgak](https://www.jeongyookgak.com/index)' site.
