@@ -80,4 +80,4 @@ Common
 
 - Our DB are in each member's local...
 >- Can't share same DB & can't test our BE module in the same environment
->- 💡 Let's try AWS next time!
+>- 💡 Let's try AWS RDS or S3 next time!
