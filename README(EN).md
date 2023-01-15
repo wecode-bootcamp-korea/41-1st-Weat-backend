@@ -60,7 +60,6 @@ Communication
 <img src="https://img.shields.io/badge/Notion-000000?style=flat&amp;logo=Notion&amp;logoColor=white">
 
 <br>
-<br>
 
 ## 🖼️ Example
 
