@@ -1,4 +1,7 @@
 # 🥩 Weat
+
+<img src="https://user-images.githubusercontent.com/53294075/212554426-9855b21d-46aa-4d4f-8984-b56b9a770bca.png" width = "200px">
+
 안녕하세요, 저희는 'Weat' 팀입니다.
 - 'Weat' 은 Wecode 코딩 부트캠프 41기 학생들로 구성된 첫번째 프로젝트 팀명이자 저희의 서비스 이름입니다.
 - '[정육각](https://www.jeongyookgak.com/index)' 사이트 클론 코딩
