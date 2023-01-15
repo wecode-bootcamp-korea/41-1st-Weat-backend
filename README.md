@@ -10,13 +10,11 @@
 🖥️ [Demo video](https://youtu.be/Es1Xk93CRZo)
 
 <br>
-<br>
 
 ## 🗓 Project기간
 
 2022/12/30 ~ 2023/01/13 (약 2주)
 
-<br>
 <br>
 
 ## 👥 인원 및 구성
@@ -29,7 +27,6 @@
 
 [👑 최민주 (Project Manager)](https://github.com/Judy-Choi), [박상우](https://github.com/Jetkick)
 
-<br>
 <br>
 
 ## 💻 기술 스택
@@ -62,7 +59,6 @@ Communication
 <img src="https://img.shields.io/badge/Notion-000000?style=flat&amp;logo=Notion&amp;logoColor=white">
 
 <br>
-<br>
 
 ## 🖼️ 구현 예시
 
@@ -83,7 +79,6 @@ Communication
 | 주문/결제 | <p align="center"><img src="https://user-images.githubusercontent.com/53294075/212548332-5febd3dc-6d7f-4f6f-867a-987e5fb657db.png" width = "400px"><br><img src="https://user-images.githubusercontent.com/53294075/212548333-04bf373b-693e-48ee-be6f-da5a06487996.png" width = "400px"><br><img src="https://user-images.githubusercontent.com/53294075/212548335-02e004d0-d530-42c6-b8c0-5ed4e72d3473.png" width = "400px"></p> | [FE] 배경민 <br> [BE] 최민주 |
 </details>
 
-<br>
 <br>
 
 ## 📑 API Documentation
