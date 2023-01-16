@@ -1,12 +1,12 @@
 # 🥩 Weat (Back-End)
 ### Back-End Team Members
 
-[👑 MJ Choi (Judy) (Project Manager)](https://github.com/Judy-Choi), [SW Park](https://github.com/Jetkick)
+[👑 최민주 (Project Manager)](https://github.com/Judy-Choi), [SW Park](https://github.com/Jetkick)
 
 <br>
 <br>
 
-## 💻 Tech Stack
+## 💻 기술 스택
 
 Back-End : 
 <img src="https://img.shields.io/badge/Node.js-339933?style=flat&amp;logo=Node.js&amp;logoColor=white">
@@ -28,33 +28,38 @@ Common :
 <br>
 <br>
 
-## 🛠️ Dev Details
+## 🛠️ 구현 상세
+
 ### 👨‍👩‍👧‍👦 Users
 #### Sign Up
-- Bcypt를 사용하여 비밀번호를 암호화하여 DB에 저장 (유저 정보를 안전하게?)
-- 정규표현식을 사용하여 비밀번호 규칙을 빠르게 체크 
+- Bcypt를 사용하여 비밀번호를 암호화하여 DB에 저장
+>- 사용자의 정보를 더욱 안전하게 관리할 수 있다
+- 정규표현식을 사용하여 비밀번호 생성 규칙을 만족하는지 빠르게 확인
 
 #### Login
 - 로그인 성공 시 서버에서 secret key 를 이용하여 JWT 생성
-- 로그인 후, 사용자 인증/인가에 패스워드 대신 JWT 를 이용하여 보안성 향상
+>- 로그인 후, 사용자 인증/인가에 패스워드 대신 JWT 를 이용하여 보안성 향상
 
 <br>
 
 ### 🍖 Products
 #### Main page
+- 판매량을 기준으로 상위 6개 제품만 DB에서 추출
 #### Category page
-#### Detail page상세 페이지(한 상품 불러오기): 한 상품의 세부 정보들을 볼 수 있도록 함
+- 쿼리 파라미터를 이용하여 다양한 필터링 조건 충족?
+- Page Nation 을 지원하기 위해 DB에서 Page Nation 단위인 6개씩만 데이터 추출
+#### Detail page
+- 한 상품의 세부 정보들을 볼 수 있도록 함
 
 <br>
 
 ### 🛒 Carts
 
 모든 API에서 JWT 사용하여 유저 확인
-
-장바구니 목록: 해당 유저의 장바구니 목록을 조회.
-장바구니 넣기: UPSERT 구문을 사용하여 한 쿼리 내에서 INSERT와 UPDATE가 동시에 이루어지도록 한 메소드 내에서 구현.
-수량 변경: 장바구니 내 상품의 수량이 변경되는 것이 DB에 바로 UPDATE 될 수 있도록 구현.
-장바구니 빼기: 한 개 혹은 한 개 이상의 상품을 장바구니에서 삭제하는 것을 한 메소드에서 구현.
+#### 장바구니 추가/수량 변경
+- UPSERT 구문을 사용하여 한 쿼리 내에서 INSERT와 UPDATE가 동시에 이루어지도록 한 메소드 내에서 구현.
+- 수량 변경: 장바구니 내 상품의 수량이 변경되는 것이 DB에 바로 UPDATE 될 수 있도록 구현.
+#### 장바구니 조회 / 삭제
 
 <br>
 
@@ -73,22 +78,39 @@ Common :
 <br>
 <br>
 
-## 🤔 Future Works
-### JWT is too weak...
-- Security risk can occur
->- 💡 We can use MFA / Refresh token
+## 🤔 아쉬웠던 점 & 개선방법
+### JWT 만으로는 보안상 취약하다
+- 보안상 문제가 일어날 수 있음
+>- 💡 추가적인 보안 기능을 도입한다. (MFA)
+>- JWT 이외에 Refresh token 을 추가로 사용한다.
 
-### Our DB are in each member's local...
-- Could not share same DB & Could not test our module in the same environment
->- 💡 Let's try AWS RDS or S3 next time!
+### DB가 팀 멤버 각각의 로컬에 존재한다
+- 완전히 동일한 DB를 사용할 수 없어서 테스트 환경에 차이가 난다
+>- 💡 AWS RDS 나 S3 를 써보자!
 
-### Inefficient FE-BE connection test
-- Can run only one server at the same time
->- 💡 Change port number
-- We had to wait until our supervisor feedbacks to the pull request and merges to the main branch
-- There are many sub branches. So when we had some module test, we had to checkout sub branches often
->- Make test branch & merge all sub branches to the test branch
+### 비효율적인 FE-BE 연결 테스트
+- 한 번에 서버 1개만 켤 수 있었다
+>- 💡 포트 번호를 바꿔서 서버를 켠다.
+- 관리자(멘토) 가 PR에 피드백을 주고 Main 브랜치에 merge 할 때까지 기다려야 했다.
+- 기능이 각 브랜치에 나누어 구현되어 있으므로 서로 다른 기능을 테스트하기 위해서는 브랜치를 계속 전환해야 했다.
+>- 테스트 브랜치를 한 개 생성하여 모든 코드를 통합하여 사용한다.
 
 ### API 작성 
-- 현업에서는 MySQL 쌩짜(?) 로 안 짠다한것같은데?
+- 현업에서는 MySQL 쿼리를 쌩짜(?) 로 안 짠다한것같은데?
 >- 그거 이름이 뭐더라...
+
+마이바티스
+Mysql 이랑 같이 씀
+자바(스프링) 에서 많이 씀
+mysql 에 없는 쉬운 방법이 많음
+같은 기능을 구현하더라도 쌩짜 mysql 보다 쉬움
+
+타입오알엠
+디비 다루 ㄹ때 더 쉽고 가독성 좋고 효율적
+우린 로우쿼리만 썼지 (쿼리빌더 안 쓰고)
+현업에선 쿼리빌더 많이 씀
+말그대로 쿼리를 빌드한다
+
+### 리팩토링 필요
+- 코드를 클래스로 분리
+- 함수 이름(메소드 이름 a.k.a API) 바꾼다던지…
