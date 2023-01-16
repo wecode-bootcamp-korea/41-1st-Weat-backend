@@ -65,7 +65,7 @@ Communication
 <details>
     <summary>이미지 보기</summary>
     
-| 페이지 | 구현 내용 캡쳐 | 개발 담당&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+| 페이지 | 구현 내용 캡쳐 | &nbsp;&nbsp;&nbsp;&nbsp;개발 담당&nbsp;&nbsp;&nbsp;&nbsp; |
 | --- | --- | --- |
 | DB 설계<br>Migration | <p align="center"><img src="https://user-images.githubusercontent.com/53294075/210484237-5bcd10e9-1c21-4408-aac1-2b9380980bf4.png" width = "600px"></p><br>[Detail LINK](https://github.com/wecode-bootcamp-korea/41-1st-Weat-backend/issues/6) | [BE] 박상우 |
 | 메인 화면 | <p align="center"><img src="https://user-images.githubusercontent.com/53294075/212548316-74f42e68-56b7-42c3-b72d-5b022b7c9c96.png" width = "400px"></p> | [FE] 김지환 <br> [BE] 최민주 |
