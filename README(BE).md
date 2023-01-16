@@ -31,13 +31,12 @@ Common
 ## 🛠️ Dev Details
 ### 👨‍👩‍👧‍👦 Users
 #### Sign Up
-- Bcypt를 사용하여 비밀번호를 암호화하여 DB에 저장
-- 정규표현식을 사용하여 비밀번호의 보안성을 높임. 
-- 
+- Bcypt를 사용하여 비밀번호를 암호화하여 DB에 저장 (유저 정보를 안전하게?)
+- 정규표현식을 사용하여 비밀번호 규칙을 빠르게 체크 
+
 #### Login
-- Bcrypt
-암호화되어 저장된 비밀번호를 복호화하여 유저가 입력한 비밀번호와 DB 내 저장된 비밀번호를 비교하고, 로그인 성공 시 JWT를 발급
-유저 정보 불러오기: JWT 토큰을 사용하여 해당 유저의 이름과 보유하고 있는 포인트를 조회
+- 로그인 성공 시 서버에서 secret key 를 이용하여 JWT 생성
+- 로그인 후, 사용자 인증/인가에 패스워드 대신 JWT 를 이용하여 보안성 향상
 
 <br>
 
@@ -90,3 +89,6 @@ Common
 - There are many sub branches. So when we had some module test, we had to checkout sub branches often
 >- Make test branch & merge all sub branches to the test branch
 
+### API 작성 
+- 현업에서는 MySQL 쌩짜(?) 로 안 짠다한것같은데?
+>- 그거 이름이 뭐더라...
